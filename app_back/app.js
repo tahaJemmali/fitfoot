@@ -4,8 +4,11 @@ var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
 
+//hné
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
+//
+
 const url = require('./config/databaseUrl.json').DataBaseUrl;
 
 var app = express();
