@@ -1,0 +1,18 @@
+version: '3.8'
+
+
+services: 
+    app_back:
+      build: 
+        context: ./app_back
+        dockerfile: Dockerfile 
+      restart: unless-stoped
+      ports:
+        - "54001:34000"
+    flutter_app:
+      build: 
+        context: ./flutter_app
+        dockerfile: Dockerfile
+      ports: 
+        - "54002:43075"
+    
