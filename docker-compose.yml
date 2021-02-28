@@ -6,7 +6,7 @@ services:
       build: 
         context: ./app_back
         dockerfile: Dockerfile 
-      restart: unless-stoped
+      restart: unless-stopped
       ports:
         - "54001:34000"
     flutter_app:

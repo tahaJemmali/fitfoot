@@ -6,4 +6,4 @@ COPY . .
 
 RUN npm install
 
-CMD["node","bin/www"]
+CMD ["node","bin/www"]
