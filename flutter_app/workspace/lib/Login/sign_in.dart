@@ -14,6 +14,9 @@ class SignIn extends StatelessWidget {
             padding: EdgeInsets.symmetric(horizontal: 20),
             child: Column(
               children: [
+                SizedBox(height:20),
+                Image.asset('assets/fflogo.png',width: 200,),
+                SizedBox(height:20),
                 Text(
                   "Welcome",
                   style: TextStyle(
@@ -25,6 +28,7 @@ class SignIn extends StatelessWidget {
                   "Sign in with your email and password",
                   textAlign: TextAlign.center,
                 ),
+                SizedBox(height:20),
                 SignInForm(),
               ],
             ),
