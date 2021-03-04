@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import './delayed_animation.dart';
 import 'package:workspace/AnalyseModule/widgets/notification.dart';
 
+import 'circular_progress_button.dart';
+
 class Analyse extends StatelessWidget {
   // This widget is the root of your application.
   @override
@@ -23,6 +25,15 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
+  Future<Null> _onAnimationComplete() async {
+    await Future.delayed(Duration(seconds: 2));
+
+    Navigator.push(
+        context, MaterialPageRoute(builder: (context) => Notifications()));
+
+    return null;
+  }
+
   @override
   Widget build(BuildContext context) {
     final size = 200.0;
@@ -138,20 +149,9 @@ class _MyHomePageState extends State<MyHomePage> {
               padding: const EdgeInsets.all(18.0),
             ),
             DelayedAnimation(
-              child: FlatButton(
-                  color: new Color(0xFF00A19A),
-                  shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(16.0)),
-                  onPressed: () {
-                    Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) => Notifications()));
-                  },
-                  child: Text(
-                    "Afficher la resultat",
-                    style: TextStyle(color: Colors.white, fontSize: 20),
-                  )),
+              child: CircularProgressButton(
+                  text: "Afficher la resultat",
+                  onAnimationComplete: _onAnimationComplete),
               delay: 6000,
             )
           ],
