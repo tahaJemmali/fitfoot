@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'Login/sign_in.dart';
 import 'dart:async';
@@ -9,10 +10,11 @@ void main() {
     title: 'FitFoot',
     theme: ThemeData(
       fontFamily: "Muli",
-      appBarTheme: AppBarTheme(
-        color: Colors.lightBlue
-      ),
-
+      primaryColor: new Color(0xFF00A19A),
+      /*appBarTheme: AppBarTheme(
+        elevation: defaultTargetPlatform == TargetPlatform.android ? 5.0 : 0.0,
+        color: Color(0xFF00A19A),
+      ),*/
     ),
   ));
 }
@@ -29,7 +31,7 @@ class _MyAppState extends State<MyApp> {
     Future.delayed(
       Duration(seconds: 1),
       () {
-        Navigator.push(
+        Navigator.pushReplacement(
           context,
           MaterialPageRoute(
             builder: (context) => SignIn(),
@@ -43,8 +45,9 @@ class _MyAppState extends State<MyApp> {
   Widget build(BuildContext context) {
     return Scaffold(
         body: Center(
-      child: FlutterLogo(
-        size: 400,
+      child: Image.asset(
+        'assets/fflogo.png',
+        width: 300,
       ),
     ));
   }
