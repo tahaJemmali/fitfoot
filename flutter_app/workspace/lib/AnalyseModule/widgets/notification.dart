@@ -43,7 +43,7 @@ sendMail() async {
   sendit();
 }
 
-class Notification extends StatelessWidget {
+class Notifications extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -54,63 +54,16 @@ class Notification extends StatelessWidget {
         ),
         body: Column(
           children: <Widget>[
-            Image.asset(
-              'assets/images/car-shadow.png',
-            ),
             Padding(
               padding: const EdgeInsets.all(8.0),
-            ),
-            TextField(
-              decoration: new InputDecoration(
-                enabledBorder: OutlineInputBorder(
-                  borderSide: BorderSide(color: Colors.grey, width: 1),
-                ),
-                hintText: 'Make',
-              ),
-            ),
-            Padding(
-              padding: const EdgeInsets.all(8.0),
-            ),
-            TextField(
-              decoration: new InputDecoration(
-                enabledBorder: OutlineInputBorder(
-                  borderSide: BorderSide(color: Colors.grey, width: 1),
-                ),
-                hintText: 'Model',
-              ),
-            ),
-            Padding(
-              padding: const EdgeInsets.all(8.0),
-            ),
-            TextField(
-              decoration: new InputDecoration(
-                enabledBorder: OutlineInputBorder(
-                  borderSide: BorderSide(color: Colors.grey, width: 1),
-                ),
-                hintText: 'Description',
-              ),
-            ),
-            Padding(
-              padding: const EdgeInsets.all(8.0),
-            ),
-            TextField(
-              decoration: new InputDecoration(
-                enabledBorder: OutlineInputBorder(
-                  borderSide: BorderSide(color: Colors.grey, width: 1),
-                ),
-                hintText: 'Quantity',
-              ),
-            ),
-            Padding(
-              padding: const EdgeInsets.all(4.0),
             ),
             Center(
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: <Widget>[
                   RaisedButton(
-                    child: Text("Add"),
-                    onPressed: null,
+                    child: Text("Notifier le medecin"),
+                    onPressed: sendMail,
                   ),
                   SizedBox(width: 2),
                   RaisedButton(
