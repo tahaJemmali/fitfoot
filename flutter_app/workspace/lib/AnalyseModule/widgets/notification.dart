@@ -2,6 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:mailer/mailer.dart';
 import 'package:mailer/smtp_server.dart';
 import 'package:flutter_sms/flutter_sms.dart';
+import 'package:smart_select/smart_select.dart';
+import 'package:sticky_headers/sticky_headers.dart';
+import 'package:workspace/DrawerPages/home.dart';
 
 void _sendSMS(String message, List<String> recipents) async {
   String _result = await sendSMS(message: message, recipients: recipents)
@@ -49,26 +52,31 @@ class Notifications extends StatelessWidget {
     return Scaffold(
         resizeToAvoidBottomInset: false,
         appBar: AppBar(
-          title: Text("Add a new car"),
+          title: Text("L'amélioration du pied"),
           automaticallyImplyLeading: false,
         ),
         body: Column(
           children: <Widget>[
             Padding(
-              padding: const EdgeInsets.all(8.0),
+              padding: const EdgeInsets.all(300.0),
             ),
             Center(
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: <Widget>[
                   RaisedButton(
+                    color: new Color(0xFF00A19A),
                     child: Text("Notifier le medecin"),
                     onPressed: sendMail,
                   ),
                   SizedBox(width: 2),
                   RaisedButton(
-                    child: Text("Cancel"),
-                    onPressed: () => Navigator.of(context).pop(),
+                    child: Text("Continuer"),
+                    color: new Color(0xFF00A19A),
+                    onPressed: () => Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) => Home()),
+                    ),
                   ),
                 ],
               ),

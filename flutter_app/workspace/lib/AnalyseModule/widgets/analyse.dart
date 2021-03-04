@@ -6,21 +6,23 @@ class Analyse extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Analyse des donnees',
-      debugShowCheckedModeBanner: false,
-      theme: ThemeData(
-        primarySwatch: Colors.blue,
-        visualDensity: VisualDensity.adaptivePlatformDensity,
+    return Scaffold(
+      appBar: AppBar(
+        title: Text("Analyse des données"),
       ),
-      home: MyHomePage(),
+      body: MyHomePage(),
     );
   }
 }
 
 const TWO_PI = 3.14 * 2;
 
-class MyHomePage extends StatelessWidget {
+class MyHomePage extends StatefulWidget {
+  @override
+  _MyHomePageState createState() => _MyHomePageState();
+}
+
+class _MyHomePageState extends State<MyHomePage> {
   @override
   Widget build(BuildContext context) {
     final size = 200.0;
@@ -28,9 +30,6 @@ class MyHomePage extends StatelessWidget {
     bool show = false;
     return SafeArea(
       child: Scaffold(
-        appBar: AppBar(
-          title: Text("Analyse des données"),
-        ),
         body: Column(
           children: [
             Padding(
@@ -58,7 +57,7 @@ class MyHomePage extends StatelessWidget {
                                   // 0.0 , 0.5 , 0.5 , 1.0
                                   center: Alignment.center,
                                   colors: [
-                                    Colors.blue,
+                                    new Color(0xFF00A19A),
                                     Colors.grey.withAlpha(55)
                                   ]).createShader(rect);
                             },
@@ -140,7 +139,7 @@ class MyHomePage extends StatelessWidget {
             ),
             DelayedAnimation(
               child: FlatButton(
-                  color: Colors.blue,
+                  color: new Color(0xFF00A19A),
                   shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(16.0)),
                   onPressed: () {
