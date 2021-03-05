@@ -5,6 +5,7 @@ import 'package:flutter_sms/flutter_sms.dart';
 import 'package:smart_select/smart_select.dart';
 import 'package:sticky_headers/sticky_headers.dart';
 import 'package:workspace/DrawerPages/home.dart';
+import 'package:workspace/AnalyseModule/widgets/radial_progress.dart';
 
 void _sendSMS(String message, List<String> recipents) async {
   String _result = await sendSMS(message: message, recipients: recipents)
@@ -46,19 +47,40 @@ sendMail() async {
   sendit();
 }
 
-class Notifications extends StatelessWidget {
+class Notifications extends StatefulWidget {
+  @override
+  _NotificationsState createState() => _NotificationsState();
+}
+
+class _NotificationsState extends State<Notifications> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
         resizeToAvoidBottomInset: false,
         appBar: AppBar(
-          title: Text("L'amélioration du pied"),
+          title: Text("Amélioration du pied"),
           automaticallyImplyLeading: false,
         ),
         body: Column(
           children: <Widget>[
             Padding(
-              padding: const EdgeInsets.all(300.0),
+              padding: const EdgeInsets.all(10),
+            ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: [
+                RadialProgress(
+                  goalCompleted: 0.84,
+                  msg: "Pied Gauche",
+                ),
+                RadialProgress(
+                  goalCompleted: 0.5,
+                  msg: "Pied Droite",
+                ),
+              ],
+            ),
+            Padding(
+              padding: const EdgeInsets.all(200.0),
             ),
             Center(
               child: Row(
