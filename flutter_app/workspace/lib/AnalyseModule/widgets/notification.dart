@@ -47,6 +47,10 @@ sendMail() async {
   sendit();
 }
 
+double calcul_etat() {
+  return 0.74;
+}
+
 class Notifications extends StatefulWidget {
   @override
   _NotificationsState createState() => _NotificationsState();
@@ -58,7 +62,7 @@ class _NotificationsState extends State<Notifications> {
     return Scaffold(
         resizeToAvoidBottomInset: false,
         appBar: AppBar(
-          title: Text("Amélioration du pied"),
+          title: Text("Etat du pied"),
           automaticallyImplyLeading: false,
         ),
         body: Column(
@@ -70,12 +74,14 @@ class _NotificationsState extends State<Notifications> {
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
                 RadialProgress(
-                  goalCompleted: 0.84,
+                  goalCompleted: calcul_etat(),
                   msg: "Pied Gauche",
+                  amelioration: 6,
                 ),
                 RadialProgress(
-                  goalCompleted: 0.5,
+                  goalCompleted: 0.32,
                   msg: "Pied Droite",
+                  amelioration: -10,
                 ),
               ],
             ),

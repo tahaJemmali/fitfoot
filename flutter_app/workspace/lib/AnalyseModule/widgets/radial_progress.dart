@@ -4,8 +4,11 @@ import 'package:vector_math/vector_math_64.dart' as math;
 class RadialProgress extends StatefulWidget {
   final double goalCompleted;
   final String msg;
-
-  RadialProgress({@required this.goalCompleted, @required this.msg});
+  final double amelioration;
+  RadialProgress(
+      {@required this.goalCompleted,
+      @required this.msg,
+      @required this.amelioration});
   @override
   _RadialProgressState createState() => _RadialProgressState();
 }
@@ -46,7 +49,7 @@ class _RadialProgressState extends State<RadialProgress>
   Widget build(BuildContext context) {
     return CustomPaint(
       child: Container(
-        height: 150.0,
+        height: 165.0,
         width: 150.0,
         padding: EdgeInsets.symmetric(vertical: 40.0),
         child: AnimatedOpacity(
@@ -72,8 +75,18 @@ class _RadialProgressState extends State<RadialProgress>
                 height: 10.0,
               ),
               Text(
-                (widget.goalCompleted * 100).toString() + "%",
+                ((widget.goalCompleted * 100).round()).toString() + "%",
                 style: TextStyle(fontSize: 23.0, fontWeight: FontWeight.bold),
+              ),
+              Align(
+                alignment: Alignment(-0.1, 1.0),
+                child: Text(
+                  getAmString(widget.amelioration),
+                  style: TextStyle(
+                      color: getColour(widget.amelioration),
+                      fontSize: 15.0,
+                      fontWeight: FontWeight.bold),
+                ),
               ),
             ],
           ),
@@ -81,6 +94,18 @@ class _RadialProgressState extends State<RadialProgress>
       ),
       painter: RadialPainter(progressDegrees),
     );
+  }
+
+  String getAmString(double m) {
+    if (m == 0) return ((widget.amelioration).round()).toString();
+    if (m < 0) return ((widget.amelioration).round()).toString();
+    if (m > 0) return "+" + ((widget.amelioration).round()).toString();
+  }
+
+  Color getColour(double m) {
+    if (m > 0) return Colors.green;
+    if (m < 0) return Colors.red;
+    if (m == 0) return Colors.black;
   }
 }
 
@@ -104,8 +129,8 @@ class RadialPainter extends CustomPainter {
       ..shader = LinearGradient(colors: [
         Colors.green,
         Colors.greenAccent,
-        Colors.red,
-        Colors.redAccent
+        Colors.redAccent,
+        Colors.red
       ]).createShader(Rect.fromCircle(center: center, radius: size.width / 2))
       ..strokeCap = StrokeCap.round
       ..style = PaintingStyle.stroke
