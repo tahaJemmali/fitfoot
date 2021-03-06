@@ -27,6 +27,8 @@ dependencies:
   mailer: ^3.3.0
   cupertino_icons: ^1.0.0
   adobe_xd: ^1.1.0+1
+  sms: ^0.2.0
+  flushbar: ^1.10.4
   flutter:
     sdk: flutter
   

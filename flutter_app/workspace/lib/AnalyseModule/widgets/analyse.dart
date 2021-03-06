@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import './delayed_animation.dart';
-import 'package:workspace/AnalyseModule/widgets/notification.dart';
+import 'package:workspace/AnalyseModule/widgets/resultat.dart';
 
 import 'circular_progress_button.dart';
 
@@ -29,7 +29,7 @@ class _MyHomePageState extends State<MyHomePage> {
     await Future.delayed(Duration(seconds: 2));
 
     Navigator.push(
-        context, MaterialPageRoute(builder: (context) => Notifications()));
+        context, MaterialPageRoute(builder: (context) => Resultat()));
 
     return null;
   }
