@@ -1,5 +1,7 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'DrawerPages/home.dart';
 import 'Login/sign_in.dart';
 import 'dart:async';
 
@@ -24,21 +26,45 @@ class MyApp extends StatefulWidget {
   _MyAppState createState() => _MyAppState();
 }
 
+bool loggedIn = false;
+
 class _MyAppState extends State<MyApp> {
+  Future getUserData() async {
+    final SharedPreferences sharedPreferences =
+        await SharedPreferences.getInstance();
+    if (sharedPreferences.getString('email') != null) {
+      print(sharedPreferences.getString('email'));
+      setState(() {
+        loggedIn = true;
+      });
+    }
+  }
+
   @override
   void initState() {
     super.initState();
-    Future.delayed(
-      Duration(seconds: 1),
-      () {
-        Navigator.pushReplacement(
-          context,
-          MaterialPageRoute(
-            builder: (context) => SignIn(),
-          ),
-        );
-      },
-    );
+    getUserData().whenComplete(() async {
+      Future.delayed(
+        Duration(seconds: 1),
+        () {
+          if (!loggedIn) {
+            Navigator.pushReplacement(
+              context,
+              MaterialPageRoute(
+                builder: (context) => SignIn(),
+              ),
+            );
+          } else {
+            Navigator.pushReplacement(
+              context,
+              MaterialPageRoute(
+                builder: (context) => Home(),
+              ),
+            );
+          }
+        },
+      );
+    });
   }
 
   @override

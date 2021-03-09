@@ -1,8 +1,10 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:workspace/DrawerPages/profil.dart';
 import 'package:workspace/DrawerPages/settings.dart';
 import 'package:workspace/Login/sign_in.dart';
+
 
 class Home extends StatelessWidget {
   @override
@@ -64,12 +66,15 @@ class Home extends StatelessWidget {
               ListTile(
                 title: Text("Se déconnecter"),
                 leading: Icon(Icons.logout),
-                onTap: () {
+                onTap: () async {
+                  final SharedPreferences sharedPreferences =
+                        await SharedPreferences.getInstance();
+                        sharedPreferences.clear();
                   Navigator.of(context).pop();
                   Navigator.pushReplacement(
                     context,
                     MaterialPageRoute(
-                      builder: (context) => SignIn(),
+                      builder: (context) =>  SignIn(),
                     ),
                   );
                 },
