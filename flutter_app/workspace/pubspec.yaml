@@ -25,6 +25,7 @@ dependencies:
   smart_select: ^4.3.2
   sticky_headers: "^0.1.8"
   mailer: ^3.3.0
+  syncfusion_flutter_charts: ^18.4.30
   cupertino_icons: ^1.0.0
   adobe_xd: ^1.1.0+1
   sms: ^0.2.0

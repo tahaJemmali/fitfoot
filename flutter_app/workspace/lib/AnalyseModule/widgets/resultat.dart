@@ -215,8 +215,6 @@ sendMail(BuildContext c, bool a, bool b) async {
         }
       }
     });
-  } else {
-    print("no-notif");
   }
 }
 
@@ -227,7 +225,7 @@ openAlertBox(BuildContext c) {
       builder: (context) {
         return StatefulBuilder(
           // StatefulBuilder
-          builder: (c, setState) {
+          builder: (x, setState) {
             return AlertDialog(
               shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.all(Radius.circular(32.0))),
@@ -294,10 +292,15 @@ openAlertBox(BuildContext c) {
                     ),
                     new GestureDetector(
                       onTap: () => {
-                        sendMail(c, a, b),
-                        setState(() {
-                          Navigator.of(context).pop();
-                        })
+                        if (!a && !b)
+                          {print("do-nothing")}
+                        else
+                          {
+                            sendMail(c, a, b),
+                            setState(() {
+                              Navigator.of(context).pop();
+                            })
+                          }
                       },
                       child: InkWell(
                         child: Container(
@@ -323,120 +326,6 @@ openAlertBox(BuildContext c) {
           },
         );
       });
-}
-
-void _showDialog(BuildContext c) {
-  bool a = true, b = true;
-  showDialog(
-    context: c,
-    builder: (context) {
-      return StatefulBuilder(
-        // StatefulBuilder
-        builder: (context, setState) {
-          return AlertDialog(
-            actions: <Widget>[
-              Container(
-                  width: 400,
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: <Widget>[
-                      Text(
-                        "Méthode de notification",
-                        style: TextStyle(
-                            fontSize: 20, fontWeight: FontWeight.bold),
-                      ),
-                      SizedBox(
-                        height: 5,
-                      ),
-                      Container(
-                        height: 2,
-                        color: new Color(0xFF00A19A),
-                      ),
-                      SizedBox(
-                        height: 15,
-                      ),
-                      CheckboxListTile(
-                        value: a,
-                        title: Text("SMS",
-                            style: TextStyle(
-                              fontFamily: "Muli",
-                            )),
-                        secondary: const Icon(Icons.sms),
-                        activeColor: new Color(0xFF00A19A),
-                        checkColor: Colors.white,
-                        onChanged: (value) {
-                          setState(() {
-                            a = value;
-                          });
-                        },
-                      ),
-                      Divider(
-                        height: 10,
-                      ),
-                      CheckboxListTile(
-                        value: b,
-                        title: Text("Email"),
-                        secondary: const Icon(Icons.email),
-                        activeColor: new Color(0xFF00A19A),
-                        checkColor: Colors.white,
-                        onChanged: (value) {
-                          setState(() {
-                            b = value;
-                          });
-                        },
-                      ),
-                      Divider(
-                        height: 10,
-                      ),
-                      SizedBox(
-                        height: 5,
-                      ),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                        children: <Widget>[
-                          Material(
-                            elevation: 5.0,
-                            color: new Color(0xFF00A19A),
-                            child: MaterialButton(
-                              padding:
-                                  EdgeInsets.fromLTRB(10.0, 5.0, 10.0, 5.0),
-                              child: Text("Confirmer",
-                                  textAlign: TextAlign.center,
-                                  style: TextStyle(
-                                    color: Colors.white,
-                                    fontSize: 15,
-                                  )),
-                            ),
-                          ),
-                          Material(
-                            elevation: 5.0,
-                            color: new Color(0xFF00A19A),
-                            child: MaterialButton(
-                              padding:
-                                  EdgeInsets.fromLTRB(10.0, 5.0, 10.0, 5.0),
-                              onPressed: () {
-                                setState(() {
-                                  Navigator.of(context).pop();
-                                });
-                              },
-                              child: Text("Annuler",
-                                  textAlign: TextAlign.center,
-                                  style: TextStyle(
-                                    color: Colors.white,
-                                    fontSize: 15,
-                                  )),
-                            ),
-                          ),
-                        ],
-                      )
-                    ],
-                  ))
-            ],
-          );
-        },
-      );
-    },
-  );
 }
 
 // ignore: non_constant_identifier_names
@@ -559,13 +448,10 @@ class _ResultatState extends State<Resultat> {
                       onPressed: () => openAlertBox(context)),
                   SizedBox(width: 2),
                   RaisedButton(
-                    child: Text("Continuer"),
-                    color: new Color(0xFF00A19A),
-                    onPressed: () => Navigator.push(
-                      context,
-                      MaterialPageRoute(builder: (context) => Home()),
-                    ),
-                  ),
+                      child: Text("Continuer"),
+                      color: new Color(0xFF00A19A),
+                      onPressed: () => Navigator.pushReplacement(context,
+                          MaterialPageRoute(builder: (context) => Home()))),
                 ],
               ),
             )
