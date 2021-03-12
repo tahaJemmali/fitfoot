@@ -3,6 +3,9 @@ import 'package:flutter/material.dart';
 import 'package:workspace/DrawerPages/profil.dart';
 import 'package:workspace/DrawerPages/settings.dart';
 import 'package:workspace/Login/sign_in.dart';
+import 'package:workspace/AnalyseModule/assets/my_flutter_app_icons.dart';
+import 'package:workspace/AnalyseModule/widgets/mesurer.dart';
+import 'package:workspace/AnalyseModule/widgets/statistics.dart';
 
 class Home extends StatelessWidget {
   @override
@@ -17,8 +20,8 @@ class Home extends StatelessWidget {
           child: ListView(
             children: <Widget>[
               UserAccountsDrawerHeader(
-                accountName: Text("Fahd Larayedh"),
-                accountEmail: Text("fahd.larayedh@gmail.com"),
+                accountName: Text("Flen Ben Foulen"),
+                accountEmail: Text("flen.foulen@example.com"),
                 currentAccountPicture: CircleAvatar(
                   child: Container(
                     //margin: EdgeInsets.all(20),
@@ -49,6 +52,34 @@ class Home extends StatelessWidget {
               ),
               Divider(),
               ListTile(
+                title: Text("Analyse"),
+                leading: Icon(MyFlutterApp.search_outline),
+                onTap: () {
+                  Navigator.of(context).pop();
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => Mesure(),
+                    ),
+                  );
+                },
+              ),
+              Divider(),
+              ListTile(
+                title: Text("Suivi et Statistiques"),
+                leading: Icon(Icons.bar_chart_sharp),
+                onTap: () {
+                  Navigator.of(context).pop();
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => Statistics(),
+                    ),
+                  );
+                },
+              ),
+              Divider(),
+              ListTile(
                 title: Text("Réglages"),
                 leading: Icon(Icons.settings),
                 onTap: () {
@@ -61,6 +92,7 @@ class Home extends StatelessWidget {
                   );
                 },
               ),
+              Divider(),
               ListTile(
                 title: Text("Se déconnecter"),
                 leading: Icon(Icons.logout),
