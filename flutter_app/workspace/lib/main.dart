@@ -31,7 +31,7 @@ class _MyAppState extends State<MyApp> {
     Future.delayed(
       Duration(seconds: 1),
       () {
-        Navigator.pushReplacement(
+        Navigator.push(
           context,
           MaterialPageRoute(
             builder: (context) => SignIn(),

@@ -1,7 +1,9 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_bluetooth_serial/flutter_bluetooth_serial.dart';
+import 'package:workspace/deviceModule/Activites/deviceHomeActivity.dart';
 import 'package:workspace/deviceModule/widgets/BluetoothDeviceListEntry.dart';
+import 'package:workspace/deviceModule/widgets/Dialog.dart';
 
 class ListDevices extends StatelessWidget {
   @override
@@ -45,52 +47,44 @@ class _BluetoothAppState extends State<BluetoothApp> {
     if (_bluetoothState == BluetoothState.STATE_ON) {
       return DiscoveryPage();
     } else {
-      return BluetoothOffScreen();
+      return BluetoothOffScreen(
+        state: _bluetoothState,
+      );
     }
   }
 }
 
-class BluetoothOffScreen extends StatelessWidget {
+class BluetoothOffScreen extends StatefulWidget {
   //  bool final _connected = false;
   const BluetoothOffScreen({Key key, this.state}) : super(key: key);
 
   final BluetoothState state;
 
   @override
+  _BluetoothOffScreenState createState() => _BluetoothOffScreenState();
+}
+
+class _BluetoothOffScreenState extends State<BluetoothOffScreen> {
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         title: Text("Liste appareils"),
-        /*   actions: [
+        actions: [
           Switch(
-            value: _bluetoothState.isEnabled,
-            onChanged: (bool value) {
-              future() async {
-                if (value) {
-                  // Enable Bluetooth
-                  await FlutterBluetoothSerial.instance.requestEnable();
-                } else {
-                  // Disable Bluetooth
-                  await FlutterBluetoothSerial.instance.requestDisable();
-                }
-
-                // In order to update the devices list
-                await getPairedDevices();
-                _isButtonUnavailable = false;
-
-                // Disconnect from any device before
-                // turning off Bluetooth
-                if (_connected) {
-                  _disconnect();
-                }
+            value: widget.state.isEnabled,
+            onChanged: (bool value) async {
+              print(value);
+              if (value) {
+                // Enable Bluetooth
+                await FlutterBluetoothSerial.instance.requestEnable();
+              } else {
+                // Disable Bluetooth
+                await FlutterBluetoothSerial.instance.requestDisable();
               }
-
-              future().then((_) {
-                setState(() {});
-              });
             },
           )
-        ],*/
+        ],
       ),
       backgroundColor: Colors.lightBlue,
       body: Center(
@@ -103,7 +97,7 @@ class BluetoothOffScreen extends StatelessWidget {
               color: Colors.white54,
             ),
             Text(
-              'Bluetooth Adapter is ${state != null ? state.toString().substring(15) : 'not available'}.',
+              'Bluetooth Adapter is ${widget.state != null ? widget.state.toString().substring(15) : 'not available'}.',
               style: Theme.of(context)
                   .primaryTextTheme
                   .subhead
@@ -130,7 +124,7 @@ class _DiscoveryPage extends State<DiscoveryPage> {
   StreamSubscription<BluetoothDiscoveryResult> _streamSubscription;
   List<BluetoothDiscoveryResult> results = List<BluetoothDiscoveryResult>();
   bool isDiscovering;
-
+  final GlobalKey<State> _keyLoader = new GlobalKey<State>();
   _DiscoveryPage();
 
   @override
@@ -157,6 +151,36 @@ class _DiscoveryPage extends State<DiscoveryPage> {
         FlutterBluetoothSerial.instance.startDiscovery().listen((r) {
       setState(() {
         results.add(r);
+        if (r.device.isBonded) {
+          showDialog(
+            context: context,
+            builder: (BuildContext context) {
+              return AlertDialog(
+                title: const Text('Connection automatique '),
+                content: Text(
+                    "Voulez vous, vous connecté directement sur ${r.device.name} "),
+                actions: <Widget>[
+                  new FlatButton(
+                    child: new Text("D'accord"),
+                    onPressed: () {
+                      Navigator.pop(context);
+                      Navigator.of(context).pushReplacement(
+                        new MaterialPageRoute(
+                            builder: (context) => DeviceHomeActivity(r.device)),
+                      );
+                    },
+                  ),
+                  new FlatButton(
+                    child: new Text("Close"),
+                    onPressed: () {
+                      Navigator.of(context).pop();
+                    },
+                  ),
+                ],
+              );
+            },
+          );
+        }
       });
     });
 
@@ -207,10 +231,8 @@ class _DiscoveryPage extends State<DiscoveryPage> {
           return BluetoothDeviceListEntry(
             device: result.device,
             rssi: result.rssi,
-            onTap: () {
-              Navigator.of(context).pop(result.device);
-            },
-            onLongPress: () async {
+            onTap: () async {
+              Dialogs.showLoadingDialog(context, _keyLoader);
               try {
                 bool bonded = false;
                 if (result.device.isBonded) {
@@ -218,13 +240,24 @@ class _DiscoveryPage extends State<DiscoveryPage> {
                   await FlutterBluetoothSerial.instance
                       .removeDeviceBondWithAddress(result.device.address);
                   print('Unbonding from ${result.device.address} has succed');
+                  Navigator.pop(context);
                 } else {
                   print('Bonding with ${result.device.address}...');
                   bonded = await FlutterBluetoothSerial.instance
                       .bondDeviceAtAddress(result.device.address);
                   print(
                       'Bonding with ${result.device.address} has ${bonded ? 'succed' : 'failed'}.');
+                  Navigator.pop(context);
+                  if (bonded) {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => DeviceHomeActivity(result.device),
+                      ),
+                    );
+                  }
                 }
+
                 setState(() {
                   results[results.indexOf(result)] = BluetoothDiscoveryResult(
                       device: BluetoothDevice(
@@ -238,6 +271,8 @@ class _DiscoveryPage extends State<DiscoveryPage> {
                       rssi: result.rssi);
                 });
               } catch (ex) {
+                Navigator.of(_keyLoader.currentContext, rootNavigator: true)
+                    .pop();
                 showDialog(
                   context: context,
                   builder: (BuildContext context) {
