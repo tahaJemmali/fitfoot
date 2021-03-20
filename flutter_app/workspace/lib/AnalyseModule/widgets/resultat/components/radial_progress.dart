@@ -1,14 +1,22 @@
 import 'package:flutter/material.dart';
 import 'package:vector_math/vector_math_64.dart' as math;
+import 'package:workspace/AnalyseModule/components/size_config.dart';
+import 'package:auto_size_text/auto_size_text.dart';
 
 class RadialProgress extends StatefulWidget {
   final double goalCompleted;
   final String msg;
   final double amelioration;
+  final double fontt;
+  final double hei;
+  final double wei;
   RadialProgress(
       {@required this.goalCompleted,
       @required this.msg,
-      @required this.amelioration});
+      @required this.hei,
+      @required this.wei,
+      @required this.amelioration,
+      @required this.fontt});
   @override
   _RadialProgressState createState() => _RadialProgressState();
 }
@@ -47,56 +55,66 @@ class _RadialProgressState extends State<RadialProgress>
 
   @override
   Widget build(BuildContext context) {
-    return CustomPaint(
-      child: Container(
-        height: 200.0,
-        width: 200.0,
-        padding: EdgeInsets.symmetric(vertical: 40.0),
-        child: AnimatedOpacity(
-          opacity: progressDegrees > 30 ? 1.0 : 0.0,
-          duration: fadeInDuration,
-          child: Column(
-            children: <Widget>[
-              Text(
-                widget.msg,
-                style: TextStyle(fontSize: 22.0, letterSpacing: 1.5),
+    return LayoutBuilder(builder: (context, constraints) {
+      return OrientationBuilder(builder: (context, orientation) {
+        SizeConfig().init(constraints, orientation);
+        return CustomPaint(
+          child: Container(
+            height: 200.0 * SizeConfig.heightMultiplier,
+            width: 140.0 * SizeConfig.widthMultiplier,
+            child: AnimatedOpacity(
+              opacity: progressDegrees > 30 ? 1.0 : 0.0,
+              duration: fadeInDuration,
+              child: Column(
+                children: <Widget>[
+                  SizedBox(
+                    height: 2 * widget.hei,
+                  ),
+                  Text(
+                    widget.msg,
+                    style: TextStyle(
+                        fontSize: widget.fontt - 1, letterSpacing: 0.7),
+                  ),
+                  SizedBox(
+                    height: 2 * widget.hei,
+                  ),
+                  Container(
+                    height: 1 * widget.hei,
+                    width: 26.0 * widget.wei,
+                    decoration: BoxDecoration(
+                        color: new Color(0xFF00A19A),
+                        borderRadius: BorderRadius.all(Radius.circular(4.0))),
+                  ),
+                  SizedBox(
+                    height: 2 * widget.hei,
+                  ),
+                  Text(
+                    ((widget.goalCompleted * 100).round()).toString() + "%",
+                    style: TextStyle(
+                        fontSize: widget.fontt - 2,
+                        fontWeight: FontWeight.bold),
+                  ),
+                  SizedBox(
+                    height: 1 * widget.hei,
+                  ),
+                  Align(
+                    alignment: Alignment(-0.1, 1.0),
+                    child: Text(
+                      getAmString(widget.amelioration),
+                      style: TextStyle(
+                          color: getColour(widget.amelioration),
+                          fontSize: widget.fontt - 6,
+                          fontWeight: FontWeight.bold),
+                    ),
+                  ),
+                ],
               ),
-              SizedBox(
-                height: 9.0,
-              ),
-              Container(
-                height: 9.0,
-                width: 80.0,
-                decoration: BoxDecoration(
-                    color: new Color(0xFF00A19A),
-                    borderRadius: BorderRadius.all(Radius.circular(4.0))),
-              ),
-              SizedBox(
-                height: 12.0,
-              ),
-              Text(
-                ((widget.goalCompleted * 100).round()).toString() + "%",
-                style: TextStyle(fontSize: 25.0, fontWeight: FontWeight.bold),
-              ),
-              SizedBox(
-                height: 5,
-              ),
-              Align(
-                alignment: Alignment(-0.1, 1.0),
-                child: Text(
-                  getAmString(widget.amelioration),
-                  style: TextStyle(
-                      color: getColour(widget.amelioration),
-                      fontSize: 19.0,
-                      fontWeight: FontWeight.bold),
-                ),
-              ),
-            ],
+            ),
           ),
-        ),
-      ),
-      painter: RadialPainter(progressDegrees),
-    );
+          painter: RadialPainter(progressDegrees),
+        );
+      });
+    });
   }
 
   String getAmString(double m) {

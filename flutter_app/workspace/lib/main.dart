@@ -3,19 +3,21 @@ import 'Login/sign_in.dart';
 import 'dart:async';
 
 void main() {
-  runApp(MaterialApp(
-    home: MyApp(),
-    debugShowCheckedModeBanner: false,
-    title: 'FitFoot',
-    theme: ThemeData(
-      fontFamily: "Muli",
-      primaryColor: new Color(0xFF00A19A),
-      /*appBarTheme: AppBarTheme(
-        elevation: defaultTargetPlatform == TargetPlatform.android ? 5.0 : 0.0,
-        color: Color(0xFF00A19A),
-      ),*/
+  runApp(
+    MaterialApp(
+      home: MyApp(),
+      debugShowCheckedModeBanner: false,
+      title: 'FitFoot',
+      theme: ThemeData(
+        fontFamily: "Muli",
+        primaryColor: new Color(0xFF00A19A),
+        /*appBarTheme: AppBarTheme(
+          elevation: defaultTargetPlatform == TargetPlatform.android ? 5.0 : 0.0,
+          color: Color(0xFF00A19A),
+        ),*/
+      ),
     ),
-  ));
+  );
 }
 
 class MyApp extends StatefulWidget {

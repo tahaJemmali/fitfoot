@@ -5,7 +5,7 @@ import 'package:workspace/DrawerPages/settings.dart';
 import 'package:workspace/Login/sign_in.dart';
 import 'package:workspace/AnalyseModule/assets/my_flutter_app_icons.dart';
 import 'package:workspace/AnalyseModule/widgets/mesurer.dart';
-import 'package:workspace/AnalyseModule/widgets/statistics.dart';
+import 'package:workspace/AnalyseModule/widgets/stats/statistics.dart';
 
 class Home extends StatelessWidget {
   @override
@@ -13,8 +13,6 @@ class Home extends StatelessWidget {
     return Scaffold(
         appBar: AppBar(
           title: Text("Home"),
-          elevation:
-              defaultTargetPlatform == TargetPlatform.android ? 3.0 : 0.0,
         ),
         drawer: Drawer(
           child: ListView(

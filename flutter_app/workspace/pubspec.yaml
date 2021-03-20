@@ -30,7 +30,9 @@ dependencies:
   adobe_xd: ^1.1.0+1
   sms: ^0.2.0
   sizer: ^1.1.8
+  auto_size_text: ^2.1.0
   flushbar: ^1.10.4
+  device_preview: ^0.5.5
   flutter:
     sdk: flutter
   

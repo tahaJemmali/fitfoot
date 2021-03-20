@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:workspace/AnalyseModule/widgets/analyse.dart';
+import 'package:workspace/AnalyseModule/widgets/analyse/analyse.dart';
 
 class Mesure extends StatelessWidget {
   @override

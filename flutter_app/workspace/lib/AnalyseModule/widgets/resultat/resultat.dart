@@ -1,12 +1,199 @@
 import 'package:flutter/material.dart';
 import 'package:mailer/mailer.dart';
 import 'package:mailer/smtp_server.dart';
-import 'package:workspace/AnalyseModule/widgets/delayed_animation.dart';
+import 'package:workspace/AnalyseModule/components/delayed_animation.dart';
+import 'package:workspace/AnalyseModule/components/size_config.dart';
 import 'package:workspace/DrawerPages/home.dart';
-import 'package:workspace/AnalyseModule/widgets/radial_progress.dart';
+import 'package:workspace/AnalyseModule/widgets/resultat/components/radial_progress.dart';
 import 'package:sms/sms.dart';
 import 'package:flushbar/flushbar.dart';
-import 'package:workspace/AnalyseModule/widgets/custom_checkbox.dart';
+import 'package:workspace/AnalyseModule/widgets/resultat/components/custom_checkbox.dart';
+
+class Resultat extends StatefulWidget {
+  @override
+  _ResultatState createState() => _ResultatState();
+}
+
+class _ResultatState extends State<Resultat> {
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+        resizeToAvoidBottomInset: false,
+        body: LayoutBuilder(builder: (context, constraints) {
+          return OrientationBuilder(builder: (context, orientation) {
+            SizeConfig().init(constraints, orientation);
+            return Column(
+              children: <Widget>[
+                SizedBox(
+                  height: 7 * SizeConfig.heightMultiplier,
+                ),
+                AnimationDroite(),
+                SizedBox(
+                  height: 3 * SizeConfig.heightMultiplier,
+                ),
+                MessageDroite(),
+                SizedBox(
+                  height: 3 * SizeConfig.heightMultiplier,
+                ),
+                AnimationGauche(),
+                SizedBox(
+                  height: 3 * SizeConfig.heightMultiplier,
+                ),
+                MessageGauche(),
+                Expanded(
+                  flex: 2,
+                  child: Center(
+                    child: Column(
+                      children: [
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: <Widget>[
+                            RaisedButton(
+                              onPressed: () => openAlertBox(context),
+                              color: new Color(0xFF00A19A),
+                              shape: new RoundedRectangleBorder(
+                                borderRadius: new BorderRadius.circular(30.0),
+                              ),
+                              child: Text(
+                                'Notifier le medecin'.toUpperCase(),
+                                style: TextStyle(
+                                  fontSize: 2.7 * SizeConfig.textMultiplier,
+                                  color: Colors.white,
+                                ),
+                              ),
+                            ),
+                            SizedBox(
+                              width: 2 * SizeConfig.widthMultiplier,
+                            ),
+                            RaisedButton(
+                              onPressed: () => Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (BuildContext context) => Home(),
+                                ),
+                              ),
+                              color: new Color(0xFF00A19A),
+                              shape: new RoundedRectangleBorder(
+                                borderRadius: new BorderRadius.circular(30.0),
+                              ),
+                              child: Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                children: <Widget>[
+                                  Text(
+                                    'Continuer'.toUpperCase(),
+                                    style: TextStyle(
+                                      fontSize: 2.7 * SizeConfig.textMultiplier,
+                                      color: Colors.white,
+                                    ),
+                                  ),
+                                  Icon(
+                                    Icons.arrow_forward,
+                                    color: Colors.white,
+                                  )
+                                ],
+                              ),
+                            ),
+                          ],
+                        ),
+                      ],
+                    ),
+                  ),
+                )
+              ],
+            );
+          });
+        }));
+  }
+
+  Expanded MessageGauche() {
+    return Expanded(
+      flex: 2,
+      child: Row(mainAxisAlignment: MainAxisAlignment.center, children: [
+        DelayedAnimation(
+          child: Row(
+            children: [
+              Align(
+                child: Text(
+                  message_etat(calcul_etat_Gauche()),
+                  textAlign: TextAlign.left,
+                  style: TextStyle(
+                      fontSize: 5 * SizeConfig.textMultiplier,
+                      fontFamily: "Muli",
+                      color: color_message(calcul_etat_Gauche())),
+                ),
+              ),
+            ],
+          ),
+          delay: 1300,
+        ),
+      ]),
+    );
+  }
+
+  Expanded AnimationGauche() {
+    return Expanded(
+      flex: 3,
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          RadialProgress(
+            goalCompleted: calcul_etat_Gauche(),
+            msg: "Pied Gauche",
+            amelioration: 6,
+            fontt: 4 * SizeConfig.textMultiplier,
+            hei: SizeConfig.heightMultiplier,
+            wei: SizeConfig.widthMultiplier,
+          ),
+        ],
+      ),
+    );
+  }
+
+  Expanded MessageDroite() {
+    return Expanded(
+      flex: 2,
+      child: Row(mainAxisAlignment: MainAxisAlignment.center, children: [
+        DelayedAnimation(
+          child: Row(
+            children: [
+              Align(
+                child: Text(
+                  message_etat(calcul_etat_Droite()),
+                  textAlign: TextAlign.left,
+                  style: TextStyle(
+                      fontSize: 5 * SizeConfig.textMultiplier,
+                      fontFamily: "Muli",
+                      color: color_message(calcul_etat_Droite())),
+                ),
+              ),
+            ],
+          ),
+          delay: 1300,
+        ),
+      ]),
+    );
+  }
+
+  Expanded AnimationDroite() {
+    return Expanded(
+      flex: 3,
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          RadialProgress(
+            goalCompleted: calcul_etat_Droite(),
+            msg: "Pied Droite",
+            amelioration: -22,
+            fontt: 4 * SizeConfig.textMultiplier,
+            hei: SizeConfig.heightMultiplier,
+            wei: SizeConfig.widthMultiplier,
+          ),
+        ],
+      ),
+    );
+  }
+}
 
 SmsMessage sms() {
   SmsSender sender = new SmsSender();
@@ -25,7 +212,7 @@ sendMail(BuildContext c, bool a, bool b) async {
     m.onStateChanged.listen((state) {
       if (state == SmsMessageState.Delivered) {
         Flushbar(
-          margin: EdgeInsets.all(8),
+          margin: EdgeInsets.all(8 * SizeConfig.widthMultiplier),
           borderRadius: 8,
           boxShadows: [
             BoxShadow(
@@ -42,7 +229,7 @@ sendMail(BuildContext c, bool a, bool b) async {
         )..show(c);
       } else if (state == SmsMessageState.Fail) {
         Flushbar(
-          margin: EdgeInsets.all(8),
+          margin: EdgeInsets.all(8 * SizeConfig.widthMultiplier),
           borderRadius: 8,
           boxShadows: [
             BoxShadow(
@@ -84,7 +271,7 @@ sendMail(BuildContext c, bool a, bool b) async {
     }
     if (sent) {
       Flushbar(
-        margin: EdgeInsets.all(8),
+        margin: EdgeInsets.all(8 * SizeConfig.widthMultiplier),
         borderRadius: 8,
         boxShadows: [
           BoxShadow(
@@ -328,165 +515,4 @@ Color color_message(double etat) {
   else if (t > 50 && t < 76)
     return new Color(0xFF000000);
   else if (t > 75) return new Color(0xFF000000);
-}
-
-class Resultat extends StatefulWidget {
-  @override
-  _ResultatState createState() => _ResultatState();
-}
-
-class _ResultatState extends State<Resultat> {
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-        resizeToAvoidBottomInset: false,
-        body: Column(
-          children: <Widget>[
-            Padding(
-              padding: const EdgeInsets.all(10),
-            ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                SizedBox(
-                  width: 10,
-                ),
-                RadialProgress(
-                  goalCompleted: calcul_etat_Droite(),
-                  msg: "Pied Droite",
-                  amelioration: -22,
-                ),
-                SizedBox(
-                  width: 25,
-                ),
-              ],
-            ),
-            SizedBox(
-              height: 25,
-            ),
-            Row(mainAxisAlignment: MainAxisAlignment.center, children: [
-              DelayedAnimation(
-                child: Row(
-                  children: [
-                    SizedBox(
-                      width: 1,
-                    ),
-                    Align(
-                      child: Text(
-                        message_etat(calcul_etat_Droite()),
-                        textAlign: TextAlign.left,
-                        style: TextStyle(
-                            fontSize: 22,
-                            fontFamily: "Muli",
-                            color: color_message(calcul_etat_Droite())),
-                      ),
-                    ),
-                  ],
-                ),
-                delay: 1300,
-              ),
-            ]),
-            Padding(
-              padding: const EdgeInsets.all(20),
-            ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                SizedBox(
-                  width: 10,
-                ),
-                RadialProgress(
-                  goalCompleted: calcul_etat_Gauche(),
-                  msg: "Pied Gauche",
-                  amelioration: 6,
-                ),
-                SizedBox(
-                  width: 25,
-                ),
-              ],
-            ),
-            SizedBox(
-              height: 25,
-            ),
-            Row(mainAxisAlignment: MainAxisAlignment.center, children: [
-              DelayedAnimation(
-                child: Row(
-                  children: [
-                    SizedBox(
-                      width: 1,
-                    ),
-                    Align(
-                      child: Text(
-                        message_etat(calcul_etat_Gauche()),
-                        textAlign: TextAlign.left,
-                        style: TextStyle(
-                            fontSize: 22,
-                            fontFamily: "Muli",
-                            color: color_message(calcul_etat_Gauche())),
-                      ),
-                    ),
-                  ],
-                ),
-                delay: 1300,
-              ),
-            ]),
-            Padding(
-              padding: const EdgeInsets.all(40.0),
-            ),
-            Center(
-              child: Column(
-                children: [
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: <Widget>[
-                      SizedBox(width: 2),
-                      RaisedButton(
-                        onPressed: () => openAlertBox(context),
-                        color: new Color(0xFF00A19A),
-                        shape: new RoundedRectangleBorder(
-                          borderRadius: new BorderRadius.circular(30.0),
-                        ),
-                        child: Text(
-                          'Notifier le medecin'.toUpperCase(),
-                          style: TextStyle(
-                            fontSize: 17,
-                            color: Colors.white,
-                          ),
-                        ),
-                      ),
-                      SizedBox(
-                        width: 10,
-                      ),
-                      RaisedButton(
-                        onPressed: () => Navigator.pushReplacement(context,
-                            MaterialPageRoute(builder: (context) => Home())),
-                        color: new Color(0xFF00A19A),
-                        shape: new RoundedRectangleBorder(
-                          borderRadius: new BorderRadius.circular(30.0),
-                        ),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: <Widget>[
-                            Text(
-                              'Continuer'.toUpperCase(),
-                              style: TextStyle(
-                                fontSize: 17,
-                                color: Colors.white,
-                              ),
-                            ),
-                            Icon(
-                              Icons.arrow_forward,
-                              color: Colors.white,
-                            )
-                          ],
-                        ),
-                      ),
-                    ],
-                  ),
-                ],
-              ),
-            )
-          ],
-        ));
-  }
 }
