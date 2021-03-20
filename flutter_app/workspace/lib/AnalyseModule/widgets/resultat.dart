@@ -6,6 +6,7 @@ import 'package:workspace/DrawerPages/home.dart';
 import 'package:workspace/AnalyseModule/widgets/radial_progress.dart';
 import 'package:sms/sms.dart';
 import 'package:flushbar/flushbar.dart';
+import 'package:workspace/AnalyseModule/widgets/custom_checkbox.dart';
 
 SmsMessage sms() {
   SmsSender sender = new SmsSender();
@@ -256,39 +257,8 @@ openAlertBox(BuildContext c) {
                     ),
                     Padding(
                       padding: EdgeInsets.only(left: 30.0, right: 30.0),
-                      child: CheckboxListTile(
-                        value: a,
-                        title: Text("SMS",
-                            style: TextStyle(
-                              fontFamily: "Muli",
-                            )),
-                        secondary: const Icon(Icons.sms),
-                        activeColor: new Color(0xFF00A19A),
-                        checkColor: Colors.white,
-                        onChanged: (value) {
-                          setState(() {
-                            a = value;
-                          });
-                        },
-                      ),
-                    ),
-                    Divider(
-                      height: 10,
-                    ),
-                    Padding(
-                      padding: EdgeInsets.only(left: 30.0, right: 30.0),
-                      child: CheckboxListTile(
-                        value: b,
-                        title: Text("Email"),
-                        secondary: const Icon(Icons.email),
-                        activeColor: new Color(0xFF00A19A),
-                        checkColor: Colors.white,
-                        onChanged: (value) {
-                          setState(() {
-                            b = value;
-                          });
-                        },
-                      ),
+                      child: CustomCheckBox(Icons.ac_unit, "test",
+                          onSelect: (bool value) {}),
                     ),
                     new GestureDetector(
                       onTap: () => {
@@ -370,88 +340,149 @@ class _ResultatState extends State<Resultat> {
   Widget build(BuildContext context) {
     return Scaffold(
         resizeToAvoidBottomInset: false,
-        appBar: AppBar(
-          title: Text("Etat du pied"),
-          automaticallyImplyLeading: false,
-        ),
         body: Column(
           children: <Widget>[
             Padding(
               padding: const EdgeInsets.all(10),
             ),
             Row(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              mainAxisAlignment: MainAxisAlignment.center,
               children: [
+                SizedBox(
+                  width: 10,
+                ),
+                RadialProgress(
+                  goalCompleted: calcul_etat_Droite(),
+                  msg: "Pied Droite",
+                  amelioration: -22,
+                ),
+                SizedBox(
+                  width: 25,
+                ),
+              ],
+            ),
+            SizedBox(
+              height: 25,
+            ),
+            Row(mainAxisAlignment: MainAxisAlignment.center, children: [
+              DelayedAnimation(
+                child: Row(
+                  children: [
+                    SizedBox(
+                      width: 1,
+                    ),
+                    Align(
+                      child: Text(
+                        message_etat(calcul_etat_Droite()),
+                        textAlign: TextAlign.left,
+                        style: TextStyle(
+                            fontSize: 22,
+                            fontFamily: "Muli",
+                            color: color_message(calcul_etat_Droite())),
+                      ),
+                    ),
+                  ],
+                ),
+                delay: 1300,
+              ),
+            ]),
+            Padding(
+              padding: const EdgeInsets.all(20),
+            ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                SizedBox(
+                  width: 10,
+                ),
                 RadialProgress(
                   goalCompleted: calcul_etat_Gauche(),
                   msg: "Pied Gauche",
                   amelioration: 6,
                 ),
-                RadialProgress(
-                  goalCompleted: calcul_etat_Droite(),
-                  msg: "Pied Droite",
-                  amelioration: -10,
+                SizedBox(
+                  width: 25,
                 ),
               ],
             ),
-            Padding(
-              padding: const EdgeInsets.all(13.0),
+            SizedBox(
+              height: 25,
             ),
-            DelayedAnimation(
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceAround,
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  SizedBox(
-                    width: 1,
-                  ),
-                  Align(
-                    child: Text(
-                      message_etat(calcul_etat_Gauche()),
-                      textAlign: TextAlign.left,
-                      style: TextStyle(
-                          fontSize: 20,
-                          fontFamily: "Muli",
-                          color: color_message(calcul_etat_Gauche())),
+            Row(mainAxisAlignment: MainAxisAlignment.center, children: [
+              DelayedAnimation(
+                child: Row(
+                  children: [
+                    SizedBox(
+                      width: 1,
                     ),
-                  ),
-                  SizedBox(
-                    width: 2,
-                  ),
-                  Align(
-                    child: Text(
-                      message_etat(calcul_etat_Droite()),
-                      textAlign: TextAlign.left,
-                      style: TextStyle(
-                          fontSize: 20,
-                          fontFamily: "Muli",
-                          color: color_message(calcul_etat_Droite())),
+                    Align(
+                      child: Text(
+                        message_etat(calcul_etat_Gauche()),
+                        textAlign: TextAlign.left,
+                        style: TextStyle(
+                            fontSize: 22,
+                            fontFamily: "Muli",
+                            color: color_message(calcul_etat_Gauche())),
+                      ),
                     ),
-                  ),
-                  SizedBox(
-                    width: 0.1,
-                  )
-                ],
+                  ],
+                ),
+                delay: 1300,
               ),
-              delay: 1300,
-            ),
+            ]),
             Padding(
-              padding: const EdgeInsets.all(200.0),
+              padding: const EdgeInsets.all(40.0),
             ),
             Center(
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: <Widget>[
-                  RaisedButton(
-                      color: new Color(0xFF00A19A),
-                      child: Text("Notifier le medecin"),
-                      onPressed: () => openAlertBox(context)),
-                  SizedBox(width: 2),
-                  RaisedButton(
-                      child: Text("Continuer"),
-                      color: new Color(0xFF00A19A),
-                      onPressed: () => Navigator.pushReplacement(context,
-                          MaterialPageRoute(builder: (context) => Home()))),
+              child: Column(
+                children: [
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: <Widget>[
+                      SizedBox(width: 2),
+                      RaisedButton(
+                        onPressed: () => openAlertBox(context),
+                        color: new Color(0xFF00A19A),
+                        shape: new RoundedRectangleBorder(
+                          borderRadius: new BorderRadius.circular(30.0),
+                        ),
+                        child: Text(
+                          'Notifier le medecin'.toUpperCase(),
+                          style: TextStyle(
+                            fontSize: 17,
+                            color: Colors.white,
+                          ),
+                        ),
+                      ),
+                      SizedBox(
+                        width: 10,
+                      ),
+                      RaisedButton(
+                        onPressed: () => Navigator.pushReplacement(context,
+                            MaterialPageRoute(builder: (context) => Home())),
+                        color: new Color(0xFF00A19A),
+                        shape: new RoundedRectangleBorder(
+                          borderRadius: new BorderRadius.circular(30.0),
+                        ),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: <Widget>[
+                            Text(
+                              'Continuer'.toUpperCase(),
+                              style: TextStyle(
+                                fontSize: 17,
+                                color: Colors.white,
+                              ),
+                            ),
+                            Icon(
+                              Icons.arrow_forward,
+                              color: Colors.white,
+                            )
+                          ],
+                        ),
+                      ),
+                    ],
+                  ),
                 ],
               ),
             )

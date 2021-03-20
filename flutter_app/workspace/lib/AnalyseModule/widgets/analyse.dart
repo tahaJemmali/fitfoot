@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:workspace/AnalyseModule/widgets/size_config.dart';
 import './delayed_animation.dart';
 import 'package:workspace/AnalyseModule/widgets/resultat.dart';
-
+import 'package:workspace/AnalyseModule/widgets/size_config.dart';
 import 'circular_progress_button.dart';
+import 'package:sizer/sizer.dart';
 
 class Analyse extends StatelessWidget {
   // This widget is the root of your application.
@@ -11,8 +13,24 @@ class Analyse extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         title: Text("Analyse des données"),
+        automaticallyImplyLeading: false,
       ),
-      body: MyHomePage(),
+      body: LayoutBuilder(
+        builder: (context, constraints) {
+          return OrientationBuilder(
+            //return OrientationBuilder
+            builder: (context, orientation) {
+              SizeConfig().init(constraints, orientation);
+              //initialize SizerUtil()
+              SizerUtil().init(constraints, orientation); //initialize SizerUtil
+              return MaterialApp(
+                debugShowCheckedModeBanner: false,
+                home: MyHomePage(),
+              );
+            },
+          );
+        },
+      ),
     );
   }
 }
@@ -36,16 +54,19 @@ class _MyHomePageState extends State<MyHomePage> {
 
   @override
   Widget build(BuildContext context) {
-    final size = 200.0;
+    //SizeConfig().init(context);
+    final size = 150.0;
     int percentage;
     bool show = false;
+
     return SafeArea(
       child: Scaffold(
-        body: Column(
-          children: [
-            Padding(
-              padding: const EdgeInsets.all(25.0),
-              child: Center(
+        body: Container(
+          constraints:
+              BoxConstraints(maxHeight: 150 * SizeConfig.heightMultiplier),
+          child: Column(
+            children: [
+              Center(
                 // This Tween Animation Builder is Just For Demonstration, Do not use this AS-IS in Projects
                 // Create and Animation Controller and Control the animation that way.
                 child: TweenAnimationBuilder(
@@ -85,14 +106,18 @@ class _MyHomePageState extends State<MyHomePage> {
                           ),
                           Center(
                             child: Container(
+                              constraints: BoxConstraints(
+                                  minHeight: 6.5 * SizeConfig.heightMultiplier,
+                                  maxHeight: 7.9 * SizeConfig.heightMultiplier),
                               width: size - 40,
                               height: size - 40,
                               decoration: BoxDecoration(
                                   color: Colors.white, shape: BoxShape.circle),
                               child: Center(
                                   child: Text(
-                                "$percentage",
-                                style: TextStyle(fontSize: 40),
+                                "$percentage" + "%",
+                                style: TextStyle(
+                                    fontSize: 4.5 * SizeConfig.textMultiplier),
                               )),
                             ),
                           )
@@ -102,59 +127,76 @@ class _MyHomePageState extends State<MyHomePage> {
                   },
                 ),
               ),
-            ),
-            Padding(
-              padding: const EdgeInsets.all(10.0),
-            ),
-            DelayedAnimation(
-              child: Align(
-                alignment: Alignment.centerLeft,
-                child: Text(
-                  '  - Analyse des températures',
-                  textAlign: TextAlign.left,
-                  style: TextStyle(fontSize: 23),
+              Padding(
+                padding: EdgeInsets.all(6.0 * SizeConfig.widthMultiplier),
+              ),
+              FittedBox(
+                child: Column(
+                  children: [
+                    DelayedAnimation(
+                      child: Align(
+                        alignment: Alignment.center,
+                        child: Text(
+                          '   Analyse des températures',
+                          textAlign: TextAlign.left,
+                          style: TextStyle(
+                              fontSize: 4 * SizeConfig.textMultiplier,
+                              fontFamily: "Muli"),
+                        ),
+                      ),
+                      delay: 2,
+                    ),
+                    Padding(
+                      padding: EdgeInsets.all(6.0 * SizeConfig.widthMultiplier),
+                    ),
+                    DelayedAnimation(
+                      child: Align(
+                        alignment: Alignment.center,
+                        child: Text(
+                          '   Analyse de Gonflement',
+                          textAlign: TextAlign.left,
+                          style: TextStyle(
+                              fontSize: 4 * SizeConfig.textMultiplier,
+                              fontFamily: "Muli"),
+                        ),
+                      ),
+                      delay: 2000,
+                    ),
+                    Padding(
+                      padding: EdgeInsets.all(6.0 * SizeConfig.widthMultiplier),
+                    ),
+                    DelayedAnimation(
+                      child: Align(
+                        alignment: Alignment.center,
+                        child: Text(
+                          '   Analyse de rougeur',
+                          textAlign: TextAlign.left,
+                          style: TextStyle(
+                              fontSize: 4 * SizeConfig.textMultiplier,
+                              fontFamily: "Muli"),
+                        ),
+                      ),
+                      delay: 4000,
+                    ),
+                  ],
                 ),
               ),
-              delay: 2,
-            ),
-            Padding(
-              padding: const EdgeInsets.all(18.0),
-            ),
-            DelayedAnimation(
-              child: Align(
-                alignment: Alignment.centerLeft,
-                child: Text(
-                  '  - Analyse de Gonflement',
-                  textAlign: TextAlign.left,
-                  style: TextStyle(fontSize: 23),
-                ),
+              Padding(
+                padding: EdgeInsets.all(6.0 * SizeConfig.widthMultiplier),
               ),
-              delay: 2000,
-            ),
-            Padding(
-              padding: const EdgeInsets.all(18.0),
-            ),
-            DelayedAnimation(
-              child: Align(
-                alignment: Alignment.centerLeft,
-                child: Text(
-                  '  - Analyse de rougeur',
-                  textAlign: TextAlign.left,
-                  style: TextStyle(fontSize: 23),
-                ),
+              DelayedAnimation(
+                child: CircularProgressButton(
+                    width: 70.0 * SizeConfig.widthMultiplier,
+                    color: new Color(0xFF00A19A),
+                    text: "Afficher la resultat",
+                    textStyle: TextStyle(
+                        fontSize: 4 * SizeConfig.textMultiplier,
+                        color: Colors.white),
+                    onAnimationComplete: _onAnimationComplete),
+                delay: 6000,
               ),
-              delay: 4000,
-            ),
-            Padding(
-              padding: const EdgeInsets.all(18.0),
-            ),
-            DelayedAnimation(
-              child: CircularProgressButton(
-                  text: "Afficher la resultat",
-                  onAnimationComplete: _onAnimationComplete),
-              delay: 6000,
-            )
-          ],
+            ],
+          ),
         ),
       ),
     );

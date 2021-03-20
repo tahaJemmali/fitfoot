@@ -49,8 +49,8 @@ class _RadialProgressState extends State<RadialProgress>
   Widget build(BuildContext context) {
     return CustomPaint(
       child: Container(
-        height: 171.0,
-        width: 157.0,
+        height: 200.0,
+        width: 200.0,
         padding: EdgeInsets.symmetric(vertical: 40.0),
         child: AnimatedOpacity(
           opacity: progressDegrees > 30 ? 1.0 : 0.0,
@@ -59,24 +59,27 @@ class _RadialProgressState extends State<RadialProgress>
             children: <Widget>[
               Text(
                 widget.msg,
-                style: TextStyle(fontSize: 18.0, letterSpacing: 1.5),
+                style: TextStyle(fontSize: 22.0, letterSpacing: 1.5),
               ),
               SizedBox(
-                height: 4.0,
+                height: 9.0,
               ),
               Container(
-                height: 5.0,
+                height: 9.0,
                 width: 80.0,
                 decoration: BoxDecoration(
                     color: new Color(0xFF00A19A),
                     borderRadius: BorderRadius.all(Radius.circular(4.0))),
               ),
               SizedBox(
-                height: 10.0,
+                height: 12.0,
               ),
               Text(
                 ((widget.goalCompleted * 100).round()).toString() + "%",
-                style: TextStyle(fontSize: 23.0, fontWeight: FontWeight.bold),
+                style: TextStyle(fontSize: 25.0, fontWeight: FontWeight.bold),
+              ),
+              SizedBox(
+                height: 5,
               ),
               Align(
                 alignment: Alignment(-0.1, 1.0),
@@ -84,7 +87,7 @@ class _RadialProgressState extends State<RadialProgress>
                   getAmString(widget.amelioration),
                   style: TextStyle(
                       color: getColour(widget.amelioration),
-                      fontSize: 15.0,
+                      fontSize: 19.0,
                       fontWeight: FontWeight.bold),
                 ),
               ),
