@@ -68,11 +68,13 @@ router.put('/login', async (req, res) => {
 
 router.get('/emailActivation/:email', async (req, res) => {
   const email = req.params.email;
+  var mailFound=false;
   try {
     await userSchema.find({}).then(async (result) => {
       if (result.length != 0) {
         result.forEach(async (user) => {
           if (user.email == email) {
+            mailFound=true;
             if (user.emailVerification == false) {
               user.emailVerification = true;
               await userSchema.findByIdAndUpdate({ _id: user.id }, user).then(async (result) => {
@@ -80,13 +82,14 @@ router.get('/emailActivation/:email', async (req, res) => {
               });
             } else {
               //account laready activated
-              res.status(304).send("Adresse Email déja activé");
+              res.status(200).send("Adresse Email déja activé");
             }
-          } else {
-            // email does not exist
-            res.status(404).send("404 Email Not Found");
           }
         });
+        if (!mailFound){
+          // email does not exist
+          res.status(404).send("404 Email Not Found");
+        }
       } else {
         res.status(404).send("404 Not Found");
       }
@@ -120,7 +123,9 @@ router.post('/register', async (req, res) => {
       var allowInsert = true;
       if (result.length != 0) {
         result.forEach(async (user) => {
-          if (user.email == request_data.email) {
+          console.log(request_data.email.toLowerCase());
+          console.log(user.email.toLowerCase());
+          if (user.email.toLowerCase() == request_data.email.toLowerCase()) {
             allowInsert = false;
             console.log('Email already exists');
             res.status(200).json({ message: "Email already exists" });
@@ -132,29 +137,30 @@ router.post('/register', async (req, res) => {
           var mailOptions = {
             from: 'FitFoot.assistance@gmail.com',
             to: request_data.email,
-            subject: 'FitFoot! Validation of your e-mail address',
+            subject: 'FitFoot! Validation de votre adresse Email',
             text: 'That was easy!',
             html: '<!DOCTYPE html>' +
-              '<html><head><title>Validation of your e-mail address</title>' +
+              '<html><head><title>Validation de votre adresse Email</title>' +
               '</head><body><div>' +
-              '<p>Votre nouveau compte FitFoot doit être activé avant de pouvoir être utilisé:</p>' +
-              '<p>Votre Nom:       ' + request_data.lastName + '</p>' +
-              '<p>Votre Prenom:       ' + request_data.firstName + '</p>' +
-              '<p>Votre Adress Email:       ' + request_data.email + '</p>' +
+              '<p>Votre nouveau compte FitFoot doit être activé avant de pouvoir être utilisé:<br/>' +
+              'Votre Nom:       ' + request_data.lastName + '<br/>' +
+              'Votre Prenom:       ' + request_data.firstName + '<br/>' +
+              'Votre Adress Email:       ' + request_data.email.toLowerCase() + '<br/>' +
+              '</p>' +
+              '<p>Cliquez <a href="http://localhost:34000/user/emailActivation/' + request_data.email.toLowerCase() + '">ici</a> pour activer votre nouveau compte:</p>' +
               '</br>' +
-              '<p>Cliquez <a href="http://localhost:34000/user/emailActivation/' + request_data.email + '">ici</a> pour activer votre nouveau compte:</p>' +
               '</br>' +
               '</br>' +
-              '</br>' +
-              '<p>Vous recevez ce message car cette adresse e-mail</p>' +
-              '<p>(' + request_data.email + ') a été utilisé pour créer un nouveau compte FitFoot.</p>' +
-              '<p>Si vous ne vous êtes pas inscrit à ce compte, vous pouvez ignorer ce message</p>' +
-              '<p>et le compte expirera de lui-même.</p>' +
-              '</br>' +
+              '<p>Vous recevez ce message car cette adresse e-mail<br/>' +
+              '(' + request_data.email + ') a été utilisé pour créer un nouveau compte FitFoot.<br/>' +
+              'Si vous ne vous êtes pas inscrit à ce compte, vous pouvez ignorer ce message<br/>' +
+              'et le compte expirera de lui-même.<br/>' +
+              '</p>' +
               '</br>' +
               '</br>' +
               '</br>' +
               '<p>FitFoot - Support</p>' +
+              '<img src="fflogo.png" alt="FitFoot Logo">'+
               '</div></body></html>'
           };
 

@@ -4,7 +4,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:workspace/DrawerPages/profil.dart';
 import 'package:workspace/DrawerPages/settings.dart';
 import 'package:workspace/Login/sign_in.dart';
-
+import 'package:workspace/Login/utils/constants.dart';
 
 class Home extends StatelessWidget {
   @override
@@ -19,8 +19,21 @@ class Home extends StatelessWidget {
           child: ListView(
             children: <Widget>[
               UserAccountsDrawerHeader(
-                accountName: Text("Fahd Larayedh"),
-                accountEmail: Text("fahd.larayedh@gmail.com"),
+                decoration: defaultTargetPlatform == TargetPlatform.android
+                    ? BoxDecoration(color: kPrimaryColor)
+                    : BoxDecoration(color: kPrimaryColor),//BoxDecoration(color: Colors.transparent),
+                accountName: Text(
+                  "Fahd Larayedh",
+                  style: defaultTargetPlatform == TargetPlatform.android
+                      ? TextStyle(color: Colors.white)
+                      : TextStyle(color: Colors.white),//TextStyle(color: Colors.black),
+                ),
+                accountEmail: Text(
+                  "fahd.larayedh@gmail.com",
+                  style: defaultTargetPlatform == TargetPlatform.android
+                      ? TextStyle(color: Colors.white)
+                      : TextStyle(color: Colors.white),//TextStyle(color: Colors.black),
+                ),
                 currentAccountPicture: CircleAvatar(
                   child: Container(
                     //margin: EdgeInsets.all(20),
@@ -36,6 +49,7 @@ class Home extends StatelessWidget {
                   ),
                 ),
               ),
+              //Divider(color: Colors.red),
               ListTile(
                 title: Text("Profil"),
                 leading: Icon(Icons.supervised_user_circle),
@@ -49,7 +63,7 @@ class Home extends StatelessWidget {
                   );
                 },
               ),
-              Divider(),
+              Divider(color: Colors.black26,thickness: 0.0,),
               ListTile(
                 title: Text("Réglages"),
                 leading: Icon(Icons.settings),
@@ -68,13 +82,13 @@ class Home extends StatelessWidget {
                 leading: Icon(Icons.logout),
                 onTap: () async {
                   final SharedPreferences sharedPreferences =
-                        await SharedPreferences.getInstance();
-                        sharedPreferences.clear();
+                      await SharedPreferences.getInstance();
+                  sharedPreferences.clear();
                   Navigator.of(context).pop();
                   Navigator.pushReplacement(
                     context,
                     MaterialPageRoute(
-                      builder: (context) =>  SignIn(),
+                      builder: (context) => SignIn(),
                     ),
                   );
                 },

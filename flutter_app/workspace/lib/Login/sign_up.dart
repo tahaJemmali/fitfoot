@@ -20,10 +20,11 @@ class SignUp extends StatelessWidget {
         appBar: AppBar(
           backgroundColor: Colors.transparent,
           leading: IconButton(
-            icon: Icon(
+            icon: defaultTargetPlatform == TargetPlatform.android ? Icon(
               Icons.arrow_back,
               color: Colors.black87,
-            ),
+            ) : Icon(
+              Icons.arrow_back_ios,color: Colors.black,),
             onPressed: () {
               Navigator.of(context).pop();
             },
@@ -331,10 +332,10 @@ class _SignUpFormState extends State<SignUpForm> {
                 gapPadding: 10,
                 borderSide: BorderSide(color: Colors.black),
               ),
-              errorBorder: OutlineInputBorder(
+              /*errorBorder: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(28),
                   gapPadding: 10,
-                  borderSide: BorderSide(color: Colors.black54, width: 2.0)),
+                  borderSide: BorderSide(color: Colors.red, width: 1.0)),*/
               enabledBorder: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(28),
                   gapPadding: 10,

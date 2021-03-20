@@ -21,7 +21,8 @@ final headingStyle = TextStyle(
   height: 1.5,
 );
 
-const String Url = "10.0.2.2:34000";
+//const String Url = "10.0.2.2:34000";
+const String Url = "localhost:34000";
 
 const defaultDuration = Duration(milliseconds: 250);
 
