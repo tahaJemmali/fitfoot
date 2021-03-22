@@ -11,7 +11,7 @@ class Analyse extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         title: Text("Analyse des données"),
-        automaticallyImplyLeading: false,
+        automaticallyImplyLeading: true,
       ),
       body: LayoutBuilder(
         builder: (context, constraints) {

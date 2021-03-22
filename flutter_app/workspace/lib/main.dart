@@ -1,13 +1,18 @@
 import 'package:flutter/material.dart';
+import 'package:workspace/AnalyseModule/widgets/mesurer.dart';
+import 'package:workspace/AnalyseModule/widgets/Analyse/analyse.dart';
+import 'package:workspace/AnalyseModule/widgets/resultat/resultat.dart';
+
+import 'package:workspace/DrawerPages/home.dart';
 import 'Login/sign_in.dart';
 import 'dart:async';
 
 void main() {
   runApp(
     MaterialApp(
-      home: MyApp(),
       debugShowCheckedModeBanner: false,
       title: 'FitFoot',
+      home: MyApp(),
       theme: ThemeData(
         fontFamily: "Muli",
         primaryColor: new Color(0xFF00A19A),

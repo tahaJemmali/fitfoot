@@ -1,4 +1,3 @@
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:workspace/DrawerPages/profil.dart';
 import 'package:workspace/DrawerPages/settings.dart';
@@ -13,6 +12,7 @@ class Home extends StatelessWidget {
     return Scaffold(
         appBar: AppBar(
           title: Text("Home"),
+          automaticallyImplyLeading: true,
         ),
         drawer: Drawer(
           child: ListView(

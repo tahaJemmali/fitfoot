@@ -17,8 +17,12 @@ class Mesure extends StatelessWidget {
                 shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(16.0)),
                 onPressed: () {
-                  Navigator.push(context,
-                      MaterialPageRoute(builder: (context) => Analyse()));
+                  Navigator.pushReplacement(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => Analyse(),
+                    ),
+                  );
                 },
                 child: Text(
                   "Analyser les données",

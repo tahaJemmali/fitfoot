@@ -7,7 +7,9 @@ import 'package:workspace/DrawerPages/home.dart';
 import 'package:workspace/AnalyseModule/widgets/resultat/components/radial_progress.dart';
 import 'package:sms/sms.dart';
 import 'package:flushbar/flushbar.dart';
-import 'package:workspace/AnalyseModule/widgets/resultat/components/custom_checkbox.dart';
+import 'package:awesome_dialog/awesome_dialog.dart';
+import 'package:workspace/Login/utils/constants.dart';
+import 'components/multiselect.dart';
 
 class Resultat extends StatefulWidget {
   @override
@@ -16,18 +18,21 @@ class Resultat extends StatefulWidget {
 
 class _ResultatState extends State<Resultat> {
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext c) {
     return Scaffold(
         resizeToAvoidBottomInset: false,
         body: LayoutBuilder(builder: (context, constraints) {
           return OrientationBuilder(builder: (context, orientation) {
             SizeConfig().init(constraints, orientation);
+            double h = SizeConfig.heightMultiplier;
+            double w = SizeConfig.widthMultiplier;
+            double f = SizeConfig.textMultiplier;
             return Column(
               children: <Widget>[
                 SizedBox(
                   height: 7 * SizeConfig.heightMultiplier,
                 ),
-                AnimationDroite(),
+                AnimationDroite(c),
                 SizedBox(
                   height: 3 * SizeConfig.heightMultiplier,
                 ),
@@ -35,7 +40,7 @@ class _ResultatState extends State<Resultat> {
                 SizedBox(
                   height: 3 * SizeConfig.heightMultiplier,
                 ),
-                AnimationGauche(),
+                AnimationGauche(c),
                 SizedBox(
                   height: 3 * SizeConfig.heightMultiplier,
                 ),
@@ -49,7 +54,7 @@ class _ResultatState extends State<Resultat> {
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: <Widget>[
                             RaisedButton(
-                              onPressed: () => openAlertBox(context),
+                              onPressed: () => openAlertBox(context, h, w, f),
                               color: new Color(0xFF00A19A),
                               shape: new RoundedRectangleBorder(
                                 borderRadius: new BorderRadius.circular(30.0),
@@ -57,7 +62,7 @@ class _ResultatState extends State<Resultat> {
                               child: Text(
                                 'Notifier le medecin'.toUpperCase(),
                                 style: TextStyle(
-                                  fontSize: 2.7 * SizeConfig.textMultiplier,
+                                  fontSize: 2.4 * SizeConfig.textMultiplier,
                                   color: Colors.white,
                                 ),
                               ),
@@ -66,12 +71,14 @@ class _ResultatState extends State<Resultat> {
                               width: 2 * SizeConfig.widthMultiplier,
                             ),
                             RaisedButton(
-                              onPressed: () => Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                  builder: (BuildContext context) => Home(),
-                                ),
-                              ),
+                              onPressed: () => {
+                                Navigator.pushReplacement(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) => Home(),
+                                  ),
+                                )
+                              },
                               color: new Color(0xFF00A19A),
                               shape: new RoundedRectangleBorder(
                                 borderRadius: new BorderRadius.circular(30.0),
@@ -83,7 +90,7 @@ class _ResultatState extends State<Resultat> {
                                   Text(
                                     'Continuer'.toUpperCase(),
                                     style: TextStyle(
-                                      fontSize: 2.7 * SizeConfig.textMultiplier,
+                                      fontSize: 2 * SizeConfig.textMultiplier,
                                       color: Colors.white,
                                     ),
                                   ),
@@ -131,23 +138,175 @@ class _ResultatState extends State<Resultat> {
     );
   }
 
-  Expanded AnimationGauche() {
+  Expanded AnimationGauche(BuildContext context) {
     return Expanded(
       flex: 3,
       child: Row(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          RadialProgress(
-            goalCompleted: calcul_etat_Gauche(),
-            msg: "Pied Gauche",
-            amelioration: 6,
-            fontt: 4 * SizeConfig.textMultiplier,
-            hei: SizeConfig.heightMultiplier,
-            wei: SizeConfig.widthMultiplier,
+          InkWell(
+            onTap: () => {detailsPiedGauche(context)},
+            splashColor: new Color(0xFF00A19A),
+            borderRadius: BorderRadius.circular(360.0),
+            child: RadialProgress(
+              goalCompleted: calcul_etat_Gauche(),
+              msg: "Pied Gauche",
+              amelioration: 6,
+              fontt: 4 * SizeConfig.textMultiplier,
+              hei: SizeConfig.heightMultiplier,
+              wei: SizeConfig.widthMultiplier,
+            ),
           ),
         ],
       ),
     );
+  }
+
+  Future detailsPiedGauche(BuildContext context) {
+    return showDialog(
+        context: context,
+        barrierDismissible: true,
+        builder: (BuildContext context) {
+          return Dialog(
+              shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(10.0)),
+              child: Container(
+                  height: 230.0,
+                  width: 200.0,
+                  decoration:
+                      BoxDecoration(borderRadius: BorderRadius.circular(20.0)),
+                  child: Column(
+                    children: <Widget>[
+                      Stack(
+                        children: <Widget>[
+                          Container(
+                            height: 80.0,
+                            decoration: BoxDecoration(
+                                borderRadius: BorderRadius.only(
+                                  topLeft: Radius.circular(10.0),
+                                  topRight: Radius.circular(10.0),
+                                ),
+                                color: Colors.teal),
+                          ),
+                          Positioned(
+                              top: 20.0,
+                              left: 50.0,
+                              child: Container(
+                                child: Center(
+                                    child: Text("Details du pied Gauche",
+                                        style: TextStyle(color: Colors.white))),
+                                height: 50.0,
+                                width: 170.0,
+                                decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(45.0),
+                                  border: Border.all(
+                                      color: Colors.white,
+                                      style: BorderStyle.solid,
+                                      width: 2.0),
+                                ),
+                              ))
+                        ],
+                      ),
+                      Padding(
+                          padding: EdgeInsets.all(10.0),
+                          child: Column(
+                            children: [
+                              Row(
+                                children: [
+                                  Text(
+                                    "Temperature:",
+                                    style: TextStyle(
+                                      fontFamily: 'Muli',
+                                      fontSize: 20.0,
+                                      fontWeight: FontWeight.w300,
+                                    ),
+                                  ),
+                                  SizedBox(
+                                    width: 10,
+                                  ),
+                                  Text(
+                                    "25°",
+                                    style: TextStyle(
+                                      fontFamily: 'Muli',
+                                      fontSize: 20.0,
+                                      fontWeight: FontWeight.w300,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                              SizedBox(
+                                height: 10,
+                              ),
+                              Row(
+                                children: [
+                                  Text(
+                                    "Gonflement:",
+                                    style: TextStyle(
+                                      fontFamily: 'Muli',
+                                      fontSize: 20.0,
+                                      fontWeight: FontWeight.w300,
+                                    ),
+                                  ),
+                                  SizedBox(
+                                    width: 20,
+                                  ),
+                                  Text(
+                                    "59%",
+                                    style: TextStyle(
+                                      fontFamily: 'Muli',
+                                      fontSize: 20.0,
+                                      fontWeight: FontWeight.w300,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                              SizedBox(
+                                height: 10,
+                              ),
+                              Row(
+                                children: [
+                                  Text(
+                                    "Rougeur:",
+                                    style: TextStyle(
+                                      fontFamily: 'Muli',
+                                      fontSize: 20.0,
+                                      fontWeight: FontWeight.w300,
+                                    ),
+                                  ),
+                                  SizedBox(
+                                    width: 52,
+                                  ),
+                                  Text(
+                                    "Trés rouge",
+                                    style: TextStyle(
+                                      fontFamily: 'Muli',
+                                      fontSize: 20.0,
+                                      fontWeight: FontWeight.w300,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ],
+                          )),
+                      Expanded(
+                        child: FlatButton(
+                            child: Center(
+                              child: Text(
+                                'Fermer',
+                                style: TextStyle(
+                                    fontFamily: 'Montserrat',
+                                    fontSize: 14.0,
+                                    color: Colors.teal),
+                              ),
+                            ),
+                            onPressed: () {
+                              Navigator.of(context).pop();
+                            },
+                            color: Colors.transparent),
+                      )
+                    ],
+                  )));
+        });
   }
 
   Expanded MessageDroite() {
@@ -175,23 +334,175 @@ class _ResultatState extends State<Resultat> {
     );
   }
 
-  Expanded AnimationDroite() {
+  Expanded AnimationDroite(BuildContext context) {
     return Expanded(
       flex: 3,
       child: Row(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          RadialProgress(
-            goalCompleted: calcul_etat_Droite(),
-            msg: "Pied Droite",
-            amelioration: -22,
-            fontt: 4 * SizeConfig.textMultiplier,
-            hei: SizeConfig.heightMultiplier,
-            wei: SizeConfig.widthMultiplier,
+          InkWell(
+            onTap: () => {detailsPiedDroite(context)},
+            splashColor: new Color(0xFF00A19A),
+            borderRadius: BorderRadius.circular(360.0),
+            child: RadialProgress(
+              goalCompleted: calcul_etat_Droite(),
+              msg: "Pied Droite",
+              amelioration: -22,
+              fontt: 4 * SizeConfig.textMultiplier,
+              hei: SizeConfig.heightMultiplier,
+              wei: SizeConfig.widthMultiplier,
+            ),
           ),
         ],
       ),
     );
+  }
+
+  Future detailsPiedDroite(BuildContext context) {
+    return showDialog(
+        context: context,
+        barrierDismissible: true,
+        builder: (BuildContext context) {
+          return Dialog(
+              shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(10.0)),
+              child: Container(
+                  height: 230,
+                  width: 100,
+                  decoration:
+                      BoxDecoration(borderRadius: BorderRadius.circular(20.0)),
+                  child: Column(
+                    children: <Widget>[
+                      Stack(
+                        children: <Widget>[
+                          Container(
+                            height: 70.0,
+                            decoration: BoxDecoration(
+                                borderRadius: BorderRadius.only(
+                                  topLeft: Radius.circular(10.0),
+                                  topRight: Radius.circular(10.0),
+                                ),
+                                color: Colors.teal),
+                          ),
+                          Positioned(
+                              top: 12.0,
+                              left: 50.0,
+                              child: Container(
+                                child: Center(
+                                    child: Text("Details du pied Droite",
+                                        style: TextStyle(color: Colors.white))),
+                                height: 50.0,
+                                width: 160.0,
+                                decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(45.0),
+                                  border: Border.all(
+                                      color: Colors.white,
+                                      style: BorderStyle.solid,
+                                      width: 2.0),
+                                ),
+                              ))
+                        ],
+                      ),
+                      Padding(
+                          padding: EdgeInsets.all(10.0),
+                          child: Column(
+                            children: [
+                              Row(
+                                children: [
+                                  Text(
+                                    "Temperature:",
+                                    style: TextStyle(
+                                      fontFamily: 'Muli',
+                                      fontSize: 20.0,
+                                      fontWeight: FontWeight.w300,
+                                    ),
+                                  ),
+                                  SizedBox(
+                                    width: 10,
+                                  ),
+                                  Text(
+                                    "25°",
+                                    style: TextStyle(
+                                      fontFamily: 'Muli',
+                                      fontSize: 20.0,
+                                      fontWeight: FontWeight.w300,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                              SizedBox(
+                                height: 10,
+                              ),
+                              Row(
+                                children: [
+                                  Text(
+                                    "Gonflement:",
+                                    style: TextStyle(
+                                      fontFamily: 'Muli',
+                                      fontSize: 20.0,
+                                      fontWeight: FontWeight.w300,
+                                    ),
+                                  ),
+                                  SizedBox(
+                                    width: 20,
+                                  ),
+                                  Text(
+                                    "59%",
+                                    style: TextStyle(
+                                      fontFamily: 'Muli',
+                                      fontSize: 20.0,
+                                      fontWeight: FontWeight.w300,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                              SizedBox(
+                                height: 10,
+                              ),
+                              Row(
+                                children: [
+                                  Text(
+                                    "Rougeur:",
+                                    style: TextStyle(
+                                      fontFamily: 'Muli',
+                                      fontSize: 20.0,
+                                      fontWeight: FontWeight.w300,
+                                    ),
+                                  ),
+                                  SizedBox(
+                                    width: 52,
+                                  ),
+                                  Text(
+                                    "Trés rouge",
+                                    style: TextStyle(
+                                      fontFamily: 'Muli',
+                                      fontSize: 20.0,
+                                      fontWeight: FontWeight.w300,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ],
+                          )),
+                      Expanded(
+                        child: FlatButton(
+                            child: Center(
+                              child: Text(
+                                'Fermer',
+                                style: TextStyle(
+                                    fontFamily: 'Montserrat',
+                                    fontSize: 14.0,
+                                    color: Colors.teal),
+                              ),
+                            ),
+                            onPressed: () {
+                              Navigator.of(context).pop();
+                            },
+                            color: Colors.transparent),
+                      )
+                    ],
+                  )));
+        });
   }
 }
 
@@ -367,22 +678,7 @@ sendMail(BuildContext c, bool a, bool b) async {
         }
       } else if (state == SmsMessageState.Fail) {
         if (!sent) {
-          Flushbar(
-            margin: EdgeInsets.all(8),
-            borderRadius: 8,
-            boxShadows: [
-              BoxShadow(
-                color: Colors.blue[800],
-                offset: Offset(0.0, 2.0),
-                blurRadius: 3.0,
-              )
-            ],
-            backgroundGradient:
-                LinearGradient(colors: [new Color(0xFF00A19A), Colors.teal]),
-            title: "Echec notification",
-            message: "SMS et Email non envoyées",
-            duration: Duration(seconds: 2),
-          )..show(c);
+          FlushEchec(c);
         } else {
           Flushbar(
             margin: EdgeInsets.all(8),
@@ -406,46 +702,92 @@ sendMail(BuildContext c, bool a, bool b) async {
   }
 }
 
-openAlertBox(BuildContext c) {
-  bool a = true, b = true;
+Flushbar FlushEchec(BuildContext c) {
+  return Flushbar(
+    margin: EdgeInsets.all(8),
+    borderRadius: 8,
+    boxShadows: [
+      BoxShadow(
+        color: Colors.blue[800],
+        offset: Offset(0.0, 2.0),
+        blurRadius: 3.0,
+      )
+    ],
+    backgroundGradient:
+        LinearGradient(colors: [new Color(0xFF00A19A), Colors.teal]),
+    title: "Echec notification",
+    message: "SMS et Email non envoyées",
+    duration: Duration(seconds: 2),
+  )..show(c);
+}
+
+openAlertBox(BuildContext c, double hei, double wei, double font) {
+  bool a = false, b = false;
+
   return showDialog(
       context: c,
       builder: (context) {
         return StatefulBuilder(
           // StatefulBuilder
+
           builder: (x, setState) {
             return AlertDialog(
               shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.all(Radius.circular(32.0))),
-              contentPadding: EdgeInsets.only(top: 10.0),
               content: Container(
-                width: 300.0,
+                height: 28.9 * hei,
+                width: 100 * wei,
                 child: Column(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  crossAxisAlignment: CrossAxisAlignment.stretch,
-                  mainAxisSize: MainAxisSize.min,
+                  mainAxisAlignment: MainAxisAlignment.center,
                   children: <Widget>[
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                      mainAxisSize: MainAxisSize.min,
-                      children: <Widget>[
-                        Text(
-                          "Methode de notification",
-                          style: TextStyle(fontSize: 24.0),
-                        ),
-                      ],
-                    ),
-                    SizedBox(
-                      height: 5.0,
+                    Expanded(
+                      flex: 0,
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: <Widget>[
+                          Text(
+                            "Methode de Notification",
+                            style: TextStyle(fontSize: 3.1 * font),
+                          ),
+                        ],
+                      ),
                     ),
                     Divider(
                       color: Colors.grey,
-                      height: 4.0,
+                      height: 1 * hei,
                     ),
-                    Padding(
-                      padding: EdgeInsets.only(left: 30.0, right: 30.0),
-                      child: CustomCheckBox(Icons.ac_unit, "test",
-                          onSelect: (bool value) {}),
+                    SizedBox(
+                      height: 3 * hei,
+                    ),
+                    Expanded(
+                      child: Center(
+                        child: MultiSelectChip(
+                          reportList,
+                          font,
+                          hei,
+                          wei,
+                          onSelectionChanged: (selectedList) {
+                            setState(() {
+                              if (selectedList.length > 1) {
+                                a = true;
+                                b = true;
+                              } else if (selectedList.length == 0) {
+                                a = false;
+                                b = false;
+                              } else if (selectedList[0] == "SMS") {
+                                a = true;
+                                b = false;
+                              } else {
+                                a = false;
+                                b = true;
+                              }
+                            });
+                          },
+                        ),
+                      ),
+                    ),
+                    SizedBox(
+                      height: 6 * hei,
                     ),
                     new GestureDetector(
                       onTap: () => {
@@ -461,17 +803,24 @@ openAlertBox(BuildContext c) {
                       },
                       child: InkWell(
                         child: Container(
-                          padding: EdgeInsets.only(top: 20.0, bottom: 20.0),
+                          width: 200 * wei,
+                          height: 9 * hei,
+                          padding: EdgeInsets.only(
+                              top: 2.0 * hei, bottom: 2.0 * hei),
                           decoration: BoxDecoration(
                             color: new Color(0xFF00A19A),
                             borderRadius: BorderRadius.only(
                                 bottomLeft: Radius.circular(32.0),
                                 bottomRight: Radius.circular(32.0)),
                           ),
-                          child: Text(
-                            "Confirmer",
-                            style: TextStyle(color: Colors.white),
-                            textAlign: TextAlign.center,
+                          child: Expanded(
+                            flex: 2,
+                            child: Text(
+                              "Confirmer",
+                              style: TextStyle(
+                                  color: Colors.white, fontSize: 3.2 * font),
+                              textAlign: TextAlign.center,
+                            ),
                           ),
                         ),
                       ),
@@ -516,3 +865,8 @@ Color color_message(double etat) {
     return new Color(0xFF000000);
   else if (t > 75) return new Color(0xFF000000);
 }
+
+List<String> reportList = [
+  "SMS",
+  "EMAIL",
+];

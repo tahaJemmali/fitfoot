@@ -22,16 +22,15 @@ environment:
 
 dependencies:
   flutter_sms: ^2.1.1
-  smart_select: ^4.3.2
-  sticky_headers: "^0.1.8"
+  
+  
   mailer: ^3.3.0
   syncfusion_flutter_charts: ^18.4.30
   cupertino_icons: ^1.0.0
   adobe_xd: ^1.1.0+1
   sms: ^0.2.0
-  sizer: ^1.1.8
-  auto_size_text: ^2.1.0
   flushbar: ^1.10.4
+  awesome_dialog: ^1.3.2
   device_preview: ^0.5.5
   flutter:
     sdk: flutter

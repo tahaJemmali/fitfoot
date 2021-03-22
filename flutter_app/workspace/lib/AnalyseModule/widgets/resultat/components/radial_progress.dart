@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:vector_math/vector_math_64.dart' as math;
 import 'package:workspace/AnalyseModule/components/size_config.dart';
-import 'package:auto_size_text/auto_size_text.dart';
 
 class RadialProgress extends StatefulWidget {
   final double goalCompleted;
@@ -68,7 +67,7 @@ class _RadialProgressState extends State<RadialProgress>
               child: Column(
                 children: <Widget>[
                   SizedBox(
-                    height: 2 * widget.hei,
+                    height: 1 * widget.hei,
                   ),
                   Text(
                     widget.msg,
@@ -103,7 +102,7 @@ class _RadialProgressState extends State<RadialProgress>
                       getAmString(widget.amelioration),
                       style: TextStyle(
                           color: getColour(widget.amelioration),
-                          fontSize: widget.fontt - 6,
+                          fontSize: widget.fontt - 7,
                           fontWeight: FontWeight.bold),
                     ),
                   ),
