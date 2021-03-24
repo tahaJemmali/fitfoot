@@ -3,13 +3,27 @@
 // found in the LICENSE file.
 
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
+import 'package:workspace/AnalyseModule/components/size_config.dart';
+import 'package:workspace/AnalyseModule/widgets/stats/components/bar_with_track.dart';
+import 'package:workspace/AnalyseModule/widgets/stats/components/default_data_labels.dart';
 
-class Statistics extends StatelessWidget {
+class Statistics extends StatefulWidget {
+  @override
+  _StatisticsState createState() => _StatisticsState();
+}
+
+class _StatisticsState extends State<Statistics> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: customTabbar(),
-    );
+        resizeToAvoidBottomInset: false,
+        body: LayoutBuilder(builder: (context, constraints) {
+          return OrientationBuilder(builder: (context, orientation) {
+            SizeConfig().init(constraints, orientation);
+            return customTabbar();
+          });
+        }));
   }
 }
 
@@ -31,12 +45,49 @@ DefaultTabController customTabbar() {
       ),
       body: TabBarView(
         children: <Widget>[
-          Center(
-            child: Text("t1"),
+          Column(
+            children: [
+              Expanded(
+                child: Padding(
+                  padding: const EdgeInsets.only(top: 20, bottom: 20, right: 2),
+                  child: DataLabelDefault(),
+                ),
+              ),
+              Expanded(
+                flex: 0,
+                child: Padding(
+                  padding:
+                      const EdgeInsets.only(left: 60, right: 50, bottom: 20),
+                  child: Row(
+                    children: [
+                      Container(
+                        width: 15,
+                        height: 15,
+                        color: const Color.fromRGBO(203, 164, 199, 1),
+                      ),
+                      SizedBox(
+                        width: 2,
+                      ),
+                      Text("Pied Gauche"),
+                      SizedBox(
+                        width: 20,
+                      ),
+                      Container(
+                        width: 15,
+                        height: 15,
+                        color: const Color.fromRGBO(140, 198, 64, 1),
+                      ),
+                      SizedBox(
+                        width: 2,
+                      ),
+                      Text("Pied Droite"),
+                    ],
+                  ),
+                ),
+              ),
+            ],
           ),
-          Center(
-            child: Text("t2"),
-          ),
+          Expanded(child: BarTracker()),
         ],
       ),
     ),

@@ -1,9 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:workspace/AnalyseModule/widgets/mesurer.dart';
-import 'package:workspace/AnalyseModule/widgets/Analyse/analyse.dart';
-import 'package:workspace/AnalyseModule/widgets/resultat/resultat.dart';
-
-import 'package:workspace/DrawerPages/home.dart';
 import 'Login/sign_in.dart';
 import 'dart:async';
 

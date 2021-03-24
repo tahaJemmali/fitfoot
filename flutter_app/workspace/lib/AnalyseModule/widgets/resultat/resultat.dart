@@ -138,7 +138,21 @@ class _ResultatState extends State<Resultat> {
     );
   }
 
+  // ignore: non_constant_identifier_names
   Expanded AnimationGauche(BuildContext context) {
+    LinearGradient x;
+    if (calcul_etat_Gauche() * 100 < 50) {
+      x = LinearGradient(colors: [
+        Colors.red,
+        Colors.redAccent,
+      ]);
+    } else if (calcul_etat_Gauche() * 100 >= 50) {
+      x = LinearGradient(colors: [
+        Colors.green,
+        Colors.greenAccent,
+      ]);
+    }
+
     return Expanded(
       flex: 3,
       child: Row(
@@ -155,6 +169,7 @@ class _ResultatState extends State<Resultat> {
               fontt: 4 * SizeConfig.textMultiplier,
               hei: SizeConfig.heightMultiplier,
               wei: SizeConfig.widthMultiplier,
+              lg: x,
             ),
           ),
         ],
@@ -207,87 +222,85 @@ class _ResultatState extends State<Resultat> {
                               ))
                         ],
                       ),
-                      Padding(
-                          padding: EdgeInsets.all(10.0),
-                          child: Column(
+                      Column(
+                        children: [
+                          Row(
                             children: [
-                              Row(
-                                children: [
-                                  Text(
-                                    "Temperature:",
-                                    style: TextStyle(
-                                      fontFamily: 'Muli',
-                                      fontSize: 20.0,
-                                      fontWeight: FontWeight.w300,
-                                    ),
-                                  ),
-                                  SizedBox(
-                                    width: 10,
-                                  ),
-                                  Text(
-                                    "25°",
-                                    style: TextStyle(
-                                      fontFamily: 'Muli',
-                                      fontSize: 20.0,
-                                      fontWeight: FontWeight.w300,
-                                    ),
-                                  ),
-                                ],
+                              Text(
+                                "Temperature:",
+                                style: TextStyle(
+                                  fontFamily: 'Muli',
+                                  fontSize: 20.0,
+                                  fontWeight: FontWeight.w300,
+                                ),
                               ),
                               SizedBox(
-                                height: 10,
+                                width: 10,
                               ),
-                              Row(
-                                children: [
-                                  Text(
-                                    "Gonflement:",
-                                    style: TextStyle(
-                                      fontFamily: 'Muli',
-                                      fontSize: 20.0,
-                                      fontWeight: FontWeight.w300,
-                                    ),
-                                  ),
-                                  SizedBox(
-                                    width: 20,
-                                  ),
-                                  Text(
-                                    "59%",
-                                    style: TextStyle(
-                                      fontFamily: 'Muli',
-                                      fontSize: 20.0,
-                                      fontWeight: FontWeight.w300,
-                                    ),
-                                  ),
-                                ],
-                              ),
-                              SizedBox(
-                                height: 10,
-                              ),
-                              Row(
-                                children: [
-                                  Text(
-                                    "Rougeur:",
-                                    style: TextStyle(
-                                      fontFamily: 'Muli',
-                                      fontSize: 20.0,
-                                      fontWeight: FontWeight.w300,
-                                    ),
-                                  ),
-                                  SizedBox(
-                                    width: 52,
-                                  ),
-                                  Text(
-                                    "Trés rouge",
-                                    style: TextStyle(
-                                      fontFamily: 'Muli',
-                                      fontSize: 20.0,
-                                      fontWeight: FontWeight.w300,
-                                    ),
-                                  ),
-                                ],
+                              Text(
+                                "25°",
+                                style: TextStyle(
+                                  fontFamily: 'Muli',
+                                  fontSize: 20.0,
+                                  fontWeight: FontWeight.w300,
+                                ),
                               ),
                             ],
-                          )),
+                          ),
+                          SizedBox(
+                            height: 10,
+                          ),
+                          Row(
+                            children: [
+                              Text(
+                                "Gonflement:",
+                                style: TextStyle(
+                                  fontFamily: 'Muli',
+                                  fontSize: 20.0,
+                                  fontWeight: FontWeight.w300,
+                                ),
+                              ),
+                              SizedBox(
+                                width: 20,
+                              ),
+                              Text(
+                                "59%",
+                                style: TextStyle(
+                                  fontFamily: 'Muli',
+                                  fontSize: 20.0,
+                                  fontWeight: FontWeight.w300,
+                                ),
+                              ),
+                            ],
+                          ),
+                          SizedBox(
+                            height: 10,
+                          ),
+                          Row(
+                            children: [
+                              Text(
+                                "Rougeur:",
+                                style: TextStyle(
+                                  fontFamily: 'Muli',
+                                  fontSize: 20.0,
+                                  fontWeight: FontWeight.w300,
+                                ),
+                              ),
+                              SizedBox(
+                                width: 49,
+                              ),
+                              Text(
+                                "Trés rouge",
+                                style: TextStyle(
+                                  fontFamily: 'Muli',
+                                  fontSize: 20.0,
+                                  fontWeight: FontWeight.w300,
+                                ),
+                              ),
+                            ],
+                          ),
+                        ],
+                      ),
                       Expanded(
                         child: FlatButton(
                             child: Center(
@@ -309,6 +322,7 @@ class _ResultatState extends State<Resultat> {
         });
   }
 
+  // ignore: non_constant_identifier_names
   Expanded MessageDroite() {
     return Expanded(
       flex: 2,
@@ -334,7 +348,20 @@ class _ResultatState extends State<Resultat> {
     );
   }
 
+  // ignore: non_constant_identifier_names
   Expanded AnimationDroite(BuildContext context) {
+    LinearGradient x;
+    if (calcul_etat_Droite() * 100 < 50) {
+      x = LinearGradient(colors: [
+        Colors.red,
+        Colors.redAccent,
+      ]);
+    } else if (calcul_etat_Droite() * 100 >= 50) {
+      x = LinearGradient(colors: [
+        Colors.green,
+        Colors.greenAccent,
+      ]);
+    }
     return Expanded(
       flex: 3,
       child: Row(
@@ -348,6 +375,7 @@ class _ResultatState extends State<Resultat> {
               goalCompleted: calcul_etat_Droite(),
               msg: "Pied Droite",
               amelioration: -22,
+              lg: x,
               fontt: 4 * SizeConfig.textMultiplier,
               hei: SizeConfig.heightMultiplier,
               wei: SizeConfig.widthMultiplier,
@@ -403,87 +431,85 @@ class _ResultatState extends State<Resultat> {
                               ))
                         ],
                       ),
-                      Padding(
-                          padding: EdgeInsets.all(10.0),
-                          child: Column(
+                      Column(
+                        children: [
+                          Row(
                             children: [
-                              Row(
-                                children: [
-                                  Text(
-                                    "Temperature:",
-                                    style: TextStyle(
-                                      fontFamily: 'Muli',
-                                      fontSize: 20.0,
-                                      fontWeight: FontWeight.w300,
-                                    ),
-                                  ),
-                                  SizedBox(
-                                    width: 10,
-                                  ),
-                                  Text(
-                                    "25°",
-                                    style: TextStyle(
-                                      fontFamily: 'Muli',
-                                      fontSize: 20.0,
-                                      fontWeight: FontWeight.w300,
-                                    ),
-                                  ),
-                                ],
+                              Text(
+                                "Temperature:",
+                                style: TextStyle(
+                                  fontFamily: 'Muli',
+                                  fontSize: 20.0,
+                                  fontWeight: FontWeight.w300,
+                                ),
                               ),
                               SizedBox(
-                                height: 10,
+                                width: 10,
                               ),
-                              Row(
-                                children: [
-                                  Text(
-                                    "Gonflement:",
-                                    style: TextStyle(
-                                      fontFamily: 'Muli',
-                                      fontSize: 20.0,
-                                      fontWeight: FontWeight.w300,
-                                    ),
-                                  ),
-                                  SizedBox(
-                                    width: 20,
-                                  ),
-                                  Text(
-                                    "59%",
-                                    style: TextStyle(
-                                      fontFamily: 'Muli',
-                                      fontSize: 20.0,
-                                      fontWeight: FontWeight.w300,
-                                    ),
-                                  ),
-                                ],
-                              ),
-                              SizedBox(
-                                height: 10,
-                              ),
-                              Row(
-                                children: [
-                                  Text(
-                                    "Rougeur:",
-                                    style: TextStyle(
-                                      fontFamily: 'Muli',
-                                      fontSize: 20.0,
-                                      fontWeight: FontWeight.w300,
-                                    ),
-                                  ),
-                                  SizedBox(
-                                    width: 52,
-                                  ),
-                                  Text(
-                                    "Trés rouge",
-                                    style: TextStyle(
-                                      fontFamily: 'Muli',
-                                      fontSize: 20.0,
-                                      fontWeight: FontWeight.w300,
-                                    ),
-                                  ),
-                                ],
+                              Text(
+                                "25°",
+                                style: TextStyle(
+                                  fontFamily: 'Muli',
+                                  fontSize: 20.0,
+                                  fontWeight: FontWeight.w300,
+                                ),
                               ),
                             ],
-                          )),
+                          ),
+                          SizedBox(
+                            height: 10,
+                          ),
+                          Row(
+                            children: [
+                              Text(
+                                "Gonflement:",
+                                style: TextStyle(
+                                  fontFamily: 'Muli',
+                                  fontSize: 20.0,
+                                  fontWeight: FontWeight.w300,
+                                ),
+                              ),
+                              SizedBox(
+                                width: 20,
+                              ),
+                              Text(
+                                "59%",
+                                style: TextStyle(
+                                  fontFamily: 'Muli',
+                                  fontSize: 20.0,
+                                  fontWeight: FontWeight.w300,
+                                ),
+                              ),
+                            ],
+                          ),
+                          SizedBox(
+                            height: 10,
+                          ),
+                          Row(
+                            children: [
+                              Text(
+                                "Rougeur:",
+                                style: TextStyle(
+                                  fontFamily: 'Muli',
+                                  fontSize: 20.0,
+                                  fontWeight: FontWeight.w300,
+                                ),
+                              ),
+                              SizedBox(
+                                width: 49,
+                              ),
+                              Text(
+                                "Trés rouge",
+                                style: TextStyle(
+                                  fontFamily: 'Muli',
+                                  fontSize: 20.0,
+                                  fontWeight: FontWeight.w300,
+                                ),
+                              ),
+                            ],
+                          ),
+                        ],
+                      ),
                       Expanded(
                         child: FlatButton(
                             child: Center(

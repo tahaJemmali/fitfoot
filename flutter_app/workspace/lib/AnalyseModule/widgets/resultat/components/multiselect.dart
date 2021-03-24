@@ -60,14 +60,12 @@ class _MultiSelectChipState extends State<MultiSelectChip> {
 CircleAvatar avatarek(String item) {
   if (item == "SMS") {
     return CircleAvatar(
-      backgroundImage: NetworkImage(
-          "https://e7.pngegg.com/pngimages/935/611/png-clipart-sms-text-messaging-computer-icons-mobile-phones-sms-icon-text-logo.png"),
+      backgroundImage: AssetImage("lib/AnalyseModule/assets/smslogo.png"),
       backgroundColor: Colors.transparent,
     );
   } else {
     return CircleAvatar(
-      backgroundImage: NetworkImage(
-          "https://banner2.cleanpng.com/20180720/ixe/kisspng-computer-icons-email-icon-design-equipo-comercial-5b525b3cdb7d21.311695661532123964899.jpg"),
+      backgroundImage: AssetImage("lib/AnalyseModule/assets/emaillogo.jpg"),
       backgroundColor: Colors.transparent,
     );
   }

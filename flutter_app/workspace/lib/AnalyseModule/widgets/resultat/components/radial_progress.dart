@@ -9,13 +9,15 @@ class RadialProgress extends StatefulWidget {
   final double fontt;
   final double hei;
   final double wei;
+  final LinearGradient lg;
   RadialProgress(
       {@required this.goalCompleted,
       @required this.msg,
       @required this.hei,
       @required this.wei,
       @required this.amelioration,
-      @required this.fontt});
+      @required this.fontt,
+      @required this.lg});
   @override
   _RadialProgressState createState() => _RadialProgressState();
 }
@@ -110,7 +112,7 @@ class _RadialProgressState extends State<RadialProgress>
               ),
             ),
           ),
-          painter: RadialPainter(progressDegrees),
+          painter: RadialPainter(progressDegrees, widget.lg),
         );
       });
     });
@@ -131,8 +133,8 @@ class _RadialProgressState extends State<RadialProgress>
 
 class RadialPainter extends CustomPainter {
   double progressInDegrees;
-
-  RadialPainter(this.progressInDegrees);
+  LinearGradient lg;
+  RadialPainter(this.progressInDegrees, this.lg);
 
   @override
   void paint(Canvas canvas, Size size) {
@@ -146,16 +148,11 @@ class RadialPainter extends CustomPainter {
     canvas.drawCircle(center, size.width / 2, paint);
 
     Paint progressPaint = Paint()
-      ..shader = LinearGradient(colors: [
-        Colors.green,
-        Colors.greenAccent,
-        Colors.redAccent,
-        Colors.red
-      ]).createShader(Rect.fromCircle(center: center, radius: size.width / 2))
+      ..shader = lg
+          .createShader(Rect.fromCircle(center: center, radius: size.width / 2))
       ..strokeCap = StrokeCap.round
       ..style = PaintingStyle.stroke
       ..strokeWidth = 8.0;
-
     canvas.drawArc(
         Rect.fromCircle(center: center, radius: size.width / 2),
         math.radians(-90),
