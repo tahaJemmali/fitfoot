@@ -1,13 +1,42 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bluetooth_serial/flutter_bluetooth_serial.dart';
 import 'package:workspace/DrawerPages/profil.dart';
 import 'package:workspace/DrawerPages/settings.dart';
 import 'package:workspace/Login/sign_in.dart';
 import 'package:workspace/AnalyseModule/assets/my_flutter_app_icons.dart';
 import 'package:workspace/AnalyseModule/widgets/statistics.dart';
 import 'package:workspace/deviceModule/Activites/ListDevices.dart';
+import 'package:workspace/deviceModule/Activites/deviceHomeActivity.dart';
 
-class Home extends StatelessWidget {
+class Home extends StatefulWidget {
+  static BluetoothDevice device;
+  static BluetoothState bluetoothState = BluetoothState.UNKNOWN;
+  @override
+  _HomeState createState() => _HomeState();
+}
+
+class _HomeState extends State<Home> {
+  @override
+  void initState() {
+    super.initState();
+
+    FlutterBluetoothSerial.instance.state.then((state) {
+      setState(() {
+        Home.bluetoothState = state;
+      });
+    });
+
+    // Listen for further state changes
+    FlutterBluetoothSerial.instance
+        .onStateChanged()
+        .listen((BluetoothState state) {
+      setState(() {
+        Home.bluetoothState = state;
+      });
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -55,13 +84,45 @@ class Home extends StatelessWidget {
                 title: Text("Analyse"),
                 leading: Icon(MyFlutterApp.search_outline),
                 onTap: () {
-                  Navigator.of(context).pop();
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => ListDevices(),
-                    ),
-                  );
+                  if (Home.device != null &&
+                      Home.bluetoothState == BluetoothState.STATE_ON) {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => new DeviceHomeActivity(),
+                      ),
+                    );
+                  } else {
+                    showDialog(
+                      context: context,
+                      builder: (BuildContext context) {
+                        return AlertDialog(
+                          title: const Text(
+                              'Veuiller vous connecter à un appareil'),
+                          content: Text(
+                              "Vous devez vous connecter sur un appareil pour faire l'analyse "),
+                          actions: <Widget>[
+                            new FlatButton(
+                              child: new Text("D'accord"),
+                              onPressed: () {
+                                Navigator.pop(context);
+                                Navigator.of(context)
+                                    .pushReplacement(new MaterialPageRoute(
+                                  builder: (context) => ListDevices(),
+                                ));
+                              },
+                            ),
+                            new FlatButton(
+                              child: new Text("Close"),
+                              onPressed: () {
+                                Navigator.of(context).pop();
+                              },
+                            ),
+                          ],
+                        );
+                      },
+                    );
+                  }
                 },
               ),
               Divider(),

@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_bluetooth_serial/flutter_bluetooth_serial.dart';
+import 'package:workspace/DrawerPages/home.dart';
 import 'package:workspace/deviceModule/Activites/deviceHomeActivity.dart';
 import 'package:workspace/deviceModule/widgets/BluetoothDeviceListEntry.dart';
 import 'package:workspace/deviceModule/widgets/Dialog.dart';
@@ -45,9 +46,9 @@ class _BluetoothAppState extends State<BluetoothApp> {
   @override
   Widget build(BuildContext context) {
     if (_bluetoothState == BluetoothState.STATE_ON) {
-      return DiscoveryPage();
+      return new DiscoveryPage();
     } else {
-      return BluetoothOffScreen(
+      return new BluetoothOffScreen(
         state: _bluetoothState,
       );
     }
@@ -126,7 +127,6 @@ class _DiscoveryPage extends State<DiscoveryPage> {
   bool isDiscovering;
   final GlobalKey<State> _keyLoader = new GlobalKey<State>();
   _DiscoveryPage();
-
   @override
   void initState() {
     super.initState();
@@ -156,17 +156,18 @@ class _DiscoveryPage extends State<DiscoveryPage> {
             context: context,
             builder: (BuildContext context) {
               return AlertDialog(
-                title: const Text('Connection automatique '),
-                content: Text(
-                    "Voulez vous, vous connecté directement sur ${r.device.name} "),
+                title: const Text('Connection'),
+                content:
+                    Text("Voulez vous, vous connecté sur ${r.device.name} "),
                 actions: <Widget>[
                   new FlatButton(
                     child: new Text("D'accord"),
                     onPressed: () {
                       Navigator.pop(context);
+                      Home.device = r.device;
                       Navigator.of(context).pushReplacement(
                         new MaterialPageRoute(
-                            builder: (context) => DeviceHomeActivity(r.device)),
+                            builder: (context) => new DeviceHomeActivity()),
                       );
                     },
                   ),
@@ -240,24 +241,14 @@ class _DiscoveryPage extends State<DiscoveryPage> {
                   await FlutterBluetoothSerial.instance
                       .removeDeviceBondWithAddress(result.device.address);
                   print('Unbonding from ${result.device.address} has succed');
-                  Navigator.pop(context);
                 } else {
                   print('Bonding with ${result.device.address}...');
                   bonded = await FlutterBluetoothSerial.instance
                       .bondDeviceAtAddress(result.device.address);
                   print(
                       'Bonding with ${result.device.address} has ${bonded ? 'succed' : 'failed'}.');
-                  Navigator.pop(context);
-                  if (bonded) {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => DeviceHomeActivity(result.device),
-                      ),
-                    );
-                  }
                 }
-
+                Navigator.pop(context);
                 setState(() {
                   results[results.indexOf(result)] = BluetoothDiscoveryResult(
                       device: BluetoothDevice(

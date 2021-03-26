@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:workspace/deviceModule/Activites/ListDevices.dart';
 
 class Settings extends StatelessWidget {
   @override
@@ -8,7 +9,21 @@ class Settings extends StatelessWidget {
         title: Text("Réglages"),
       ),
       body: Center(
-        child: Text("Settings"),
+        child: Column(
+          children: [
+            RaisedButton(
+              onPressed: () => {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => ListDevices(),
+                  ),
+                )
+              },
+              child: Text("Bluetooth"),
+            )
+          ],
+        ),
       ),
     );
   }

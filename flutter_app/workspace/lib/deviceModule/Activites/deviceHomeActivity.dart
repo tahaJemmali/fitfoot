@@ -1,53 +1,88 @@
-import 'dart:convert';
-import 'dart:typed_data';
-
 import 'package:flutter/material.dart';
-import 'package:flutter_bluetooth_serial/flutter_bluetooth_serial.dart';
+import 'package:workspace/DrawerPages/home.dart';
+import 'package:workspace/deviceModule/Activites/analyseDesPiedsActivity.dart';
 
 class DeviceHomeActivity extends StatefulWidget {
-  DeviceHomeActivity(this.device);
-  final BluetoothDevice device;
+  DeviceHomeActivity();
+
   @override
   _DeviceHomeActivityState createState() => _DeviceHomeActivityState();
 }
 
 class _DeviceHomeActivityState extends State<DeviceHomeActivity> {
-  BluetoothConnection connection;
-  bool isConnecting = true;
-  bool isDisconnecting = true;
-
-  connect(String address) async {
-    if (isConnecting) {
-      BluetoothConnection.toAddress(widget.device.address).then((_connection) {
-        print('Connected to the device');
-        connection = _connection;
-        connection.input.listen((Uint8List data) {
-          print(ascii.decode(data));
-        });
-        setState(() {
-          isConnecting = false;
-          isDisconnecting = false;
-        });
-      });
-      print('Connected to the device');
-    } else {
-      print('already connected to the device');
-    }
-  }
-
   @override
   Widget build(BuildContext context) {
-    connect(widget.device.address);
     return Scaffold(
       appBar: AppBar(
-        title: Text("Connected to " + widget.device.name),
+        title: Text(
+          "Jumulage effectué avec  " + Home.device.name,
+          style: TextStyle(fontSize: 15),
+        ),
       ),
-      body: FlatButton(
-        onPressed: () /*async*/ {
-          connection.output.add(utf8.encode("1" + "\r\n"));
-          /* await*/ connection.output.allSent;
-        },
-        child: Text("hello"),
+      body: Column(
+        children: [
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Column(
+                  children: [
+                    Text(
+                      "Niveau battrie de l'appareil",
+                      style: TextStyle(fontSize: 15),
+                    ),
+                    Text(
+                      "50%",
+                      style: TextStyle(fontSize: 15),
+                    ),
+                  ],
+                ),
+                SizedBox(width: 50),
+                Icon(
+                  Icons.battery_std_rounded,
+                  color: Colors.blue,
+                  size: 35,
+                  semanticLabel: 'Text to announce in accessibility modes',
+                ),
+              ],
+            ),
+          ),
+          Text(
+            "Remarque : Il est mieux de analyser l'état de votre pied le matin aprés votre réveille pour avoir des resultats correcte",
+            textAlign: TextAlign.center,
+            style: TextStyle(fontSize: 15),
+          ),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              RaisedButton(
+                onPressed: () /*async*/ {
+                  dispose();
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => Home(),
+                    ),
+                  );
+                },
+                child: Text("Accueuil"),
+              ),
+              SizedBox(width: 40),
+              RaisedButton(
+                onPressed: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => AnalyseDesPieds(),
+                    ),
+                  );
+                },
+                child: Text("Analyse des pieds"),
+              ),
+            ],
+          )
+        ],
       ),
     );
   }
