@@ -9,6 +9,13 @@ class Loading extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        leading: IconButton(
+          icon: Icon(Icons.arrow_back),
+          onPressed: () {
+            Navigator.of(context).pop();
+            Navigator.of(context).pop();
+          },
+        ),
         title: Text("Analyse des données"),
       ),
       body: MyHomePage(),
@@ -45,8 +52,6 @@ class _MyHomePageState extends State<MyHomePage> {
             Padding(
               padding: const EdgeInsets.all(25.0),
               child: Center(
-                // This Tween Animation Builder is Just For Demonstration, Do not use this AS-IS in Projects
-                // Create and Animation Controller and Control the animation that way.
                 child: TweenAnimationBuilder(
                   tween: Tween(begin: 0.0, end: 1.0),
                   duration: Duration(seconds: 6),
@@ -91,7 +96,8 @@ class _MyHomePageState extends State<MyHomePage> {
                               child: Center(
                                   child: Text(
                                 "$percentage",
-                                style: TextStyle(fontSize: 40),
+                                style: TextStyle(
+                                    fontSize: 40, color: Colors.cyan.shade800),
                               )),
                             ),
                           )
@@ -106,17 +112,29 @@ class _MyHomePageState extends State<MyHomePage> {
               padding: const EdgeInsets.all(10.0),
             ),
             Row(
+              mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 DelayedAnimation(
                   child: Align(
                     alignment: Alignment.centerLeft,
-                    child: Text(
-                      '  - Analyse de la température',
-                      textAlign: TextAlign.left,
-                      style: TextStyle(fontSize: 23),
+                    child: Column(
+                      children: [
+                        Image.asset(
+                          'assets/temperature.png',
+                          height: 50,
+                          width: 50,
+                        ),
+                        SizedBox(
+                          height: 5,
+                        ),
+                        Text(
+                          "Temperature",
+                          style: TextStyle(color: Colors.black),
+                        ),
+                      ],
                     ),
                   ),
-                  delay: 2,
+                  delay: 1500,
                 ),
                 Padding(
                   padding: const EdgeInsets.all(18.0),
@@ -124,13 +142,49 @@ class _MyHomePageState extends State<MyHomePage> {
                 DelayedAnimation(
                   child: Align(
                     alignment: Alignment.centerLeft,
-                    child: Text(
-                      '  - Analyse du gonflement',
-                      textAlign: TextAlign.left,
-                      style: TextStyle(fontSize: 23),
+                    child: Column(
+                      children: [
+                        Image.asset(
+                          'assets/gonflement.png',
+                          height: 50,
+                          width: 50,
+                        ),
+                        SizedBox(
+                          height: 5,
+                        ),
+                        Text(
+                          "Gonflement",
+                          style: TextStyle(color: Colors.black),
+                        ),
+                      ],
                     ),
                   ),
-                  delay: 2000,
+                  delay: 3000,
+                ),
+                Padding(
+                  padding: const EdgeInsets.all(18.0),
+                ),
+                DelayedAnimation(
+                  child: Align(
+                    alignment: Alignment.centerLeft,
+                    child: Column(
+                      children: [
+                        Image.asset(
+                          'assets/rougeur.png',
+                          height: 50,
+                          width: 50,
+                        ),
+                        SizedBox(
+                          height: 5,
+                        ),
+                        Text(
+                          "Rougeur",
+                          style: TextStyle(color: Colors.black),
+                        ),
+                      ],
+                    ),
+                  ),
+                  delay: 4500,
                 ),
               ],
             ),
@@ -139,8 +193,8 @@ class _MyHomePageState extends State<MyHomePage> {
             ),
             DelayedAnimation(
               child: CircularProgressButton(
-                  text: "Afficher la resultat",
-                  textStyle: TextStyle(color: Colors.white),
+                  text: "Continuer",
+                  textStyle: TextStyle(color: Colors.white, fontSize: 30),
                   onAnimationComplete: _onAnimationComplete),
               delay: 6000,
             )

@@ -1,1 +1,1 @@
-
+enum Cote { droit, gauche }

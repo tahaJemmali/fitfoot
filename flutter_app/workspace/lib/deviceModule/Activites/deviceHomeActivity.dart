@@ -14,6 +14,12 @@ class _DeviceHomeActivityState extends State<DeviceHomeActivity> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        leading: IconButton(
+          icon: Icon(Icons.arrow_back),
+          onPressed: () {
+            Navigator.of(context).pop();
+          },
+        ),
         title: Text(
           "Jumulage effectué avec  " + Home.device.name,
           style: TextStyle(fontSize: 15),

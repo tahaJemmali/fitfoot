@@ -4,6 +4,8 @@ import 'dart:typed_data';
 import 'dart:convert';
 
 import 'package:workspace/DrawerPages/home.dart';
+import 'package:workspace/deviceModule/classes/cote.dart';
+import 'package:workspace/deviceModule/classes/pied.dart';
 import 'package:workspace/deviceModule/widgets/loading.dart';
 
 class AnalyseDesPieds extends StatefulWidget {
@@ -13,27 +15,34 @@ class AnalyseDesPieds extends StatefulWidget {
 
 class _AnalyseDesPiedsState extends State<AnalyseDesPieds> {
   static BluetoothConnection connection;
-  bool isConnecting = true;
 
-  bool get isConnected => connection != null && connection.isConnected;
   bool connectionStatus;
-  String result = "";
 
   int _selectedLeg = -1;
+  String result = "";
 
   @override
   void initState() {
     super.initState();
-    BluetoothConnection.toAddress(Home.device.address).then((_connection) {
+    connect();
+  }
+
+  void connect() async {
+    await BluetoothConnection.toAddress(Home.device.address)
+        .then((_connection) {
       print('Connected to the device');
       setState(() {
         connection = _connection;
         connectionStatus = true;
-        connection.input.listen((Uint8List data) {
-          result = ascii.decode(data);
-          print(result);
-        });
       });
+    });
+  }
+
+  void disconnect() {
+    //print('Disconnected');
+    connection.finish();
+    setState(() {
+      this.connectionStatus = false;
     });
   }
 
@@ -152,13 +161,35 @@ class _AnalyseDesPiedsState extends State<AnalyseDesPieds> {
                 ),
                 SizedBox(width: 30),
                 RaisedButton(
-                  onPressed: () {
+                  onPressed: () async {
                     if (_selectedLeg != -1) {
+                      if (!connectionStatus) {
+                        connect();
+                      }
                       connection.output.add(utf8.encode("1"));
-                      /* await*/ connection.output.allSent;
-                      Navigator.of(context).pushReplacement(
-                        new MaterialPageRoute(builder: (context) => Loading()),
-                      );
+                      connection.output.allSent;
+                      connection.input.listen((Uint8List data) {
+                        result += ascii.decode(data);
+                        print("///////////////////");
+                        print(result);
+                        if (result.contains("!")) {
+                          disconnect();
+                        }
+                      }).onDone(() {
+                        result = result.substring(0, result.length - 2);
+                        Pied pied = new Pied();
+                        int separator = result.indexOf(",");
+                        pied.dimention =
+                            int.parse(result.substring(0, separator));
+                        print(result.substring(separator + 1, result.length));
+                        pied.temperature = double.parse(
+                            result.substring(separator + 1, result.length));
+                        pied.cote =
+                            _selectedLeg == 1 ? Cote.droit : Cote.gauche;
+                        print(pied.toString());
+                        Navigator.of(context).push(
+                            MaterialPageRoute(builder: (context) => Loading()));
+                      });
                     } else {
                       showDialog(
                         context: context,

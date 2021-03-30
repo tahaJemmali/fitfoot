@@ -71,6 +71,12 @@ class _BluetoothOffScreenState extends State<BluetoothOffScreen> {
     return Scaffold(
       appBar: AppBar(
         title: Text("Liste appareils"),
+        leading: IconButton(
+          icon: Icon(Icons.arrow_back),
+          onPressed: () {
+            Navigator.of(context).pop();
+          },
+        ),
         actions: [
           Switch(
             value: widget.state.isEnabled,
@@ -166,8 +172,8 @@ class _DiscoveryPage extends State<DiscoveryPage> {
                       Navigator.pop(context);
                       Home.device = r.device;
                       Navigator.of(context).pushReplacement(
-                        new MaterialPageRoute(
-                            builder: (context) => new DeviceHomeActivity()),
+                        MaterialPageRoute(
+                            builder: (context) => DeviceHomeActivity()),
                       );
                     },
                   ),
