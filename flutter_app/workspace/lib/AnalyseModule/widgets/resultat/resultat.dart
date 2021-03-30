@@ -1,14 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:mailer/mailer.dart';
 import 'package:mailer/smtp_server.dart';
+import 'package:super_tooltip/super_tooltip.dart';
 import 'package:workspace/AnalyseModule/components/delayed_animation.dart';
 import 'package:workspace/AnalyseModule/components/size_config.dart';
-import 'package:workspace/DrawerPages/home.dart';
 import 'package:workspace/AnalyseModule/widgets/resultat/components/radial_progress.dart';
 import 'package:sms/sms.dart';
 import 'package:flushbar/flushbar.dart';
-import 'package:awesome_dialog/awesome_dialog.dart';
-import 'package:workspace/Login/utils/constants.dart';
 import 'components/multiselect.dart';
 
 class Resultat extends StatefulWidget {
@@ -71,14 +69,8 @@ class _ResultatState extends State<Resultat> {
                               width: 2 * SizeConfig.widthMultiplier,
                             ),
                             RaisedButton(
-                              onPressed: () => {
-                                Navigator.pushReplacement(
-                                  context,
-                                  MaterialPageRoute(
-                                    builder: (context) => Home(),
-                                  ),
-                                )
-                              },
+                              onPressed: () =>
+                                  {print("add to database and push to home")},
                               color: new Color(0xFF00A19A),
                               shape: new RoundedRectangleBorder(
                                 borderRadius: new BorderRadius.circular(30.0),
@@ -748,7 +740,7 @@ Flushbar FlushEchec(BuildContext c) {
 }
 
 openAlertBox(BuildContext c, double hei, double wei, double font) {
-  bool a = false, b = false;
+  bool a = false, b = false, showtool = false;
 
   return showDialog(
       context: c,
@@ -818,7 +810,16 @@ openAlertBox(BuildContext c, double hei, double wei, double font) {
                     new GestureDetector(
                       onTap: () => {
                         if (!a && !b)
-                          {print("do-nothing")}
+                          {
+                            new SuperTooltip(
+                              popupDirection: TooltipDirection.down,
+                              content: new Material(
+                                  child: Text(
+                                "Choisir au moins une methode",
+                                softWrap: true,
+                              )),
+                            ).show(x),
+                          }
                         else
                           {
                             sendMail(c, a, b),
@@ -880,6 +881,8 @@ String message_etat(double etat) {
     return "Criticité Moyenne";
   else if (t > 75) return "Criticité Faible";
 }
+
+void showtooltip(BuildContext x) {}
 
 Color color_message(double etat) {
   double t = etat * 100;

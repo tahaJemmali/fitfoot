@@ -46,7 +46,7 @@ class _BarTrackerState extends SampleViewState {
           majorTickLines: MajorTickLines(size: 0)),
       series: _getTrackerBarSeries(),
       tooltipBehavior:
-          TooltipBehavior(enable: true, header: '', canShowMarker: false),
+          TooltipBehavior(enable: true, header: '', canShowMarker: true),
     );
   }
 

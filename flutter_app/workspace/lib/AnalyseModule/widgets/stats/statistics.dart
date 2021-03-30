@@ -5,8 +5,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:workspace/AnalyseModule/components/size_config.dart';
-import 'package:workspace/AnalyseModule/widgets/stats/components/bar_with_track.dart';
-import 'package:workspace/AnalyseModule/widgets/stats/components/default_data_labels.dart';
+import 'package:workspace/AnalyseModule/widgets/stats/components/amelioration.dart';
+import 'package:workspace/AnalyseModule/widgets/stats/components/useFrequence.dart';
 
 class Statistics extends StatefulWidget {
   @override
@@ -45,49 +45,10 @@ DefaultTabController customTabbar() {
       ),
       body: TabBarView(
         children: <Widget>[
-          Column(
-            children: [
-              Expanded(
-                child: Padding(
-                  padding: const EdgeInsets.only(top: 20, bottom: 20, right: 2),
-                  child: DataLabelDefault(),
-                ),
-              ),
-              Expanded(
-                flex: 0,
-                child: Padding(
-                  padding:
-                      const EdgeInsets.only(left: 60, right: 50, bottom: 20),
-                  child: Row(
-                    children: [
-                      Container(
-                        width: 15,
-                        height: 15,
-                        color: const Color.fromRGBO(203, 164, 199, 1),
-                      ),
-                      SizedBox(
-                        width: 2,
-                      ),
-                      Text("Pied Gauche"),
-                      SizedBox(
-                        width: 20,
-                      ),
-                      Container(
-                        width: 15,
-                        height: 15,
-                        color: const Color.fromRGBO(140, 198, 64, 1),
-                      ),
-                      SizedBox(
-                        width: 2,
-                      ),
-                      Text("Pied Droite"),
-                    ],
-                  ),
-                ),
-              ),
-            ],
+          Amelioration(
+            key: GlobalKey(),
           ),
-          Expanded(child: BarTracker()),
+          Frequence(key: GlobalKey()),
         ],
       ),
     ),
