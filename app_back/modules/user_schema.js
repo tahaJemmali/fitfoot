@@ -1,30 +1,34 @@
-const mongoose =require('mongoose')
+const mongoose = require('mongoose')
 const Schema = mongoose.Schema
 
 var userSchema = Schema({
-    email : {
-        type:String,
-        required:true
+    firstName: String,
+    lastName: String,
+    email: {
+        type: String,
+        required: true
     },
-    password : {
-        type:String,
-        required:true
+    emailVerification: { "type": Boolean, "default": false },
+    password: {
+        type: String,
+        required: true
     },
     salt: String,
-    sign_up_date : { "type": Date, "default": Date.now },
+    birthDate: Date,
 
-    firstName : String,
-    lastName: String,
-    address: { "type": String, "default": "Not mentioned" },
-    phone : { "type": String, "default": "Not mentioned" },
-    photo : { "type": String, "default": "Not mentioned" },
-    last_login_date : Date,
-    score : Number ,
-    birth_date : Date,
-    signed_up_with : String,
-    activation : { "type": Boolean, "default": false },
-    completedInformation : { "type": Boolean, "default": false }
+    weight: { "type": Number },
+    height: { "type": Number },
+    gender: {
+        "type": String, enum: ['Homme', 'Femme'],
+        default: 'Homme'
+    },
 
+    phone: { "type": String },
+    photo: { "type": String },
+    phoneDoctor: { "type": String },
+    address: { "type": String },
+    signUpDate: { "type": Date, "default": Date.now },
+    lastLoginDate: Date,
 })
 
-module.exports = mongoose.model('user',userSchema ,'user')
+module.exports = mongoose.model('user', userSchema, 'user')
