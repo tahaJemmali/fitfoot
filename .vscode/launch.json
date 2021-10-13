@@ -6,7 +6,7 @@
     "configurations": [
         {
             "name": "workspace",
-            "cwd": "flutter_app\\workspace",
+            "cwd": "flutter_app/workspace",
             "request": "launch",
             "type": "dart"
         }

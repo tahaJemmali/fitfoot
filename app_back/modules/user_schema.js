@@ -8,6 +8,9 @@ var userSchema = Schema({
         type: String,
         required: true
     },
+    emailDoctor: {
+        type: String,
+    },
     emailVerification: { "type": Boolean, "default": false },
     password: {
         type: String,
@@ -31,4 +34,4 @@ var userSchema = Schema({
     lastLoginDate: Date,
 })
 
-module.exports = mongoose.model('user', userSchema, 'user')
+module.exports = mongoose.model('user', userSchema,'user')

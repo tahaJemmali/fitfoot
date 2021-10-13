@@ -1,3 +1,4 @@
 {
-    "DataBaseUrl":"mongodb+srv://fitfoot_developer:61M4pgjWDdtcCGYg@cluster0.fj7hh.mongodb.net/FitFoot"
+    "DataBaseUrl":"mongodb+srv://fitfoot_developer:61M4pgjWDdtcCGYg@cluster0.fj7hh.mongodb.net/FitFoot",
+    "LocalDataBase":"mongodb://database:27017/fitfoot_back"
 }

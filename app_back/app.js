@@ -7,9 +7,20 @@ var logger = require('morgan');
 //hné
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
+var mesureRouter = require('./routes/mesures');
+var piedRouter = require('./routes/pied');
+var contactsRouter = require('./routes/contacts');
+var medsRouter = require('./routes/meds');
+var intakesRouter = require('./routes/intakes');
+var routinesRouter = require('./routes/routines');
+var consosRouter = require('./routes/consos');
+var activitiesRouter = require('./routes/activities');
+var expendituresRouter = require('./routes/expenditures');
+var appointmentsRouter = require('./routes/appointments');
 //
 
-const url = require('./config/databaseUrl.json').DataBaseUrl;
+const mongooseurl = require('./config/databaseUrl.json').DataBaseUrl;
+const localDataBaseUrl = require('./config/databaseUrl.json').LocalDataBase;
 
 var app = express();
 const mongoose = require('mongoose');
@@ -28,9 +39,19 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/', indexRouter);
 app.use('/user', usersRouter);
-
+app.use('/mesure',mesureRouter);
+app.use('/pied',piedRouter);
+app.use('/contacts', contactsRouter);
+app.use('/meds', medsRouter);
+app.use('/intakes', intakesRouter);
+app.use('/routines', routinesRouter);
+app.use('/consos', consosRouter);
+app.use('/activities', activitiesRouter);
+app.use('/expenditures', expendituresRouter);
+app.use('/appointments', appointmentsRouter);
 app.use(express.json({limit: '50mb'}));
 app.use(express.urlencoded({limit: "50mb",extended:true, parameterLimit:50000}));
+
 
 
 // catch 404 and forward to error handler
@@ -51,7 +72,7 @@ app.use(function(err, req, res, next) {
 
 
 //Connection to mongoDB
-mongoose.connect(url)
+mongoose.connect(localDataBaseUrl)
 .then((data) => console.log("database connected"))
 .catch((err) => console.log(err))
 

@@ -15,15 +15,11 @@ var http = require('http');
 var port = normalizePort(process.env.PORT || '34000');
 app.set('port', port);
 
-/*var bodyParser = require('body-parser');
-app.use(bodyParser.json({limit: '50mb'}));
-app.use(bodyParser.urlencoded({limit: "50mb",extended:true, parameterLimit:50000}));*/
 
 /**
  * Create HTTP server.
  */
 
-//var server = http.createServer({server:app,maxReceivedFrameSize:1031072,maxReceivedMessageSize:1000 * 1024 * 1024});
 var server = http.createServer(app);
 
 /**
